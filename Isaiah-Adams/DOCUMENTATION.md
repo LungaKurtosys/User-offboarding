@@ -453,6 +453,241 @@ SELECT * FROM UserApplication WHERE userId IN (6274, 5999);
 
 ---
 
+## Script 1 - Safety Checks and Backup
+
+This script must be run first before any deletion. It confirms the correct users
+have been identified, verifies clients are shared and counts all records.
+
+```sql
+-- ============================================
+-- SCRIPT 1: SAFETY CHECKS & BACKUP
+-- Author: Lunga Ndzimande
+-- Ticket: Isaiah Adams Offboarding
+-- Environment: REL (Release)
+-- Date: 2026-06-24
+-- ============================================
+
+-- STEP 1: Confirm users exist
+SELECT 
+    u.userId,
+    u.clientId,
+    u.userName,
+    u.name,
+    u.email,
+    u.status,
+    c.clientName
+FROM User u
+JOIN Client c ON u.clientId = c.clientId
+WHERE 
+    u.name LIKE '%Isaiah%' 
+    OR u.name LIKE '%Adams%'
+    OR u.email LIKE '%isaiah%' 
+    OR u.email LIKE '%adams%'
+    OR u.userName LIKE '%isaiah%' 
+    OR u.userName LIKE '%adams%';
+
+-- STEP 2: Confirm clients are SHARED
+SELECT 
+    c.clientId,
+    c.clientName,
+    COUNT(u.userId) as total_users,
+    'Client is SHARED - DO NOT DELETE' as Safety_Note
+FROM Client c
+JOIN User u ON c.clientId = u.clientId
+WHERE c.clientId IN (53, 190)
+GROUP BY c.clientId, c.clientName;
+
+-- STEP 3: Count rows before deletion
+SELECT 'User' as TableName, COUNT(*) as Row_Count 
+FROM User WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'UserRole', COUNT(*) 
+FROM UserRole WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'UserApplication', COUNT(*) 
+FROM UserApplication WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'UserConfiguration', COUNT(*) 
+FROM UserConfiguration WHERE userId IN (6274, 5999);
+```
+
+**Backup commands - run from jumpbox terminal:**
+
+```bash
+# Create backup folder
+mkdir /tmp/Isaiah-Offboarding
+cd /tmp/Isaiah-Offboarding
+
+# Backup User table
+mysqldump -h ew1r-aggr-03.rel.kurtosys-internal.net \
+-u FundPressSupport -p --hex-blob --no-create-info \
+--where="userId IN (6274, 5999)" \
+UDM__ User > User_Isaiah_2026-06-24.sql
+
+# Backup UserRole table
+mysqldump -h ew1r-aggr-03.rel.kurtosys-internal.net \
+-u FundPressSupport -p --hex-blob --no-create-info \
+--where="userId IN (6274, 5999)" \
+UDM__ UserRole > UserRole_Isaiah_2026-06-24.sql
+
+# Backup UserApplication table
+mysqldump -h ew1r-aggr-03.rel.kurtosys-internal.net \
+-u FundPressSupport -p --hex-blob --no-create-info \
+--where="userId IN (6274, 5999)" \
+UDM__ UserApplication > UserApplication_Isaiah_2026-06-24.sql
+
+# Verify backup files were created
+ls -lh /tmp/Isaiah-Offboarding/
+```
+
+**Expected backup output:**
+```
+-rw-r--r-- 1 root root  xxK Jun 24 User_Isaiah_2026-06-24.sql
+-rw-r--r-- 1 root root  xxK Jun 24 UserRole_Isaiah_2026-06-24.sql
+-rw-r--r-- 1 root root  xxK Jun 24 UserApplication_Isaiah_2026-06-24.sql
+```
+
+---
+
+## Script 2 - Delete
+
+This script must only be run after peer review and approval and after Script 1
+backups have been verified. Deletes child tables first then parent table last.
+
+```sql
+-- ============================================
+-- SCRIPT 2: DELETE
+-- Author: Lunga Ndzimande
+-- Ticket: Isaiah Adams Offboarding
+-- Environment: REL (Release)
+-- Date: 2026-06-24
+-- ONLY RUN AFTER PEER REVIEW AND APPROVAL
+-- ONLY RUN AFTER SCRIPT 1 BACKUP VERIFIED
+-- ============================================
+
+-- STEP 1: Delete child tables first
+DELETE FROM UserRole WHERE userId IN (6274, 5999);
+SELECT 'UserRole deleted' as Status, ROW_COUNT() as Rows_Affected;
+
+DELETE FROM UserApplication WHERE userId IN (6274, 5999);
+SELECT 'UserApplication deleted' as Status, ROW_COUNT() as Rows_Affected;
+
+DELETE FROM UserConfiguration WHERE userId IN (6274, 5999);
+SELECT 'UserConfiguration deleted' as Status, ROW_COUNT() as Rows_Affected;
+
+-- STEP 2: Delete parent table last
+DELETE FROM User WHERE userId IN (6274, 5999);
+SELECT 'User deleted' as Status, ROW_COUNT() as Rows_Affected;
+
+-- STEP 3: Update Cache
+SELECT * FROM WarpdriveCache WHERE clientId IN (53, 190);
+UPDATE WarpdriveCache SET lastModified = NOW() WHERE clientId IN (53, 190);
+SELECT 'WarpdriveCache updated' as Status, ROW_COUNT() as Rows_Affected;
+```
+
+**Expected output after deletion:**
+```
++-------------------------+---------------+
+| Status                  | Rows_Affected |
++-------------------------+---------------+
+| UserRole deleted        |             7 |
+| UserApplication deleted |             2 |
+| UserConfiguration deleted|            0 |
+| User deleted            |             2 |
+| WarpdriveCache updated  |             2 |
++-------------------------+---------------+
+```
+
+---
+
+## Script 3 - Verify Cleanup
+
+This script must be run after Script 2 to confirm all records have been
+successfully deleted and clients remain intact.
+
+```sql
+-- ============================================
+-- SCRIPT 3: VERIFY CLEANUP
+-- Author: Lunga Ndzimande
+-- Ticket: Isaiah Adams Offboarding
+-- Environment: REL (Release)
+-- Date: 2026-06-24
+-- ============================================
+
+-- STEP 1: Confirm users are gone
+SELECT 
+    CASE WHEN COUNT(*) = 0 
+    THEN 'SUCCESS - Users deleted' 
+    ELSE 'FAILED - Users still exist' 
+    END as User_Check
+FROM User WHERE userId IN (6274, 5999);
+
+-- STEP 2: Confirm roles are gone
+SELECT 
+    CASE WHEN COUNT(*) = 0 
+    THEN 'SUCCESS - UserRoles deleted' 
+    ELSE 'FAILED - UserRoles still exist' 
+    END as UserRole_Check
+FROM UserRole WHERE userId IN (6274, 5999);
+
+-- STEP 3: Confirm applications are gone
+SELECT 
+    CASE WHEN COUNT(*) = 0 
+    THEN 'SUCCESS - UserApplications deleted' 
+    ELSE 'FAILED - UserApplications still exist' 
+    END as UserApplication_Check
+FROM UserApplication WHERE userId IN (6274, 5999);
+
+-- STEP 4: Confirm clients still intact
+SELECT 
+    c.clientId,
+    c.clientName,
+    COUNT(u.userId) as remaining_users,
+    'Client intact' as Safety_Check
+FROM Client c
+JOIN User u ON c.clientId = u.clientId
+WHERE c.clientId IN (53, 190)
+GROUP BY c.clientId, c.clientName;
+
+-- STEP 5: Confirm cache was updated
+SELECT 
+    clientId,
+    lastModified,
+    'Cache Updated' as Cache_Check
+FROM WarpdriveCache 
+WHERE clientId IN (53, 190);
+```
+
+**Expected output after verification:**
+```
++-----------------------------------+
+| User_Check                        |
++-----------------------------------+
+| SUCCESS - Users deleted           |
++-----------------------------------+
+
++-----------------------------------+
+| UserRole_Check                    |
++-----------------------------------+
+| SUCCESS - UserRoles deleted       |
++-----------------------------------+
+
++-------------------------------------------+
+| UserApplication_Check                     |
++-------------------------------------------+
+| SUCCESS - UserApplications deleted        |
++-------------------------------------------+
+
++----------+-------------------+-----------------+---------------+
+| clientId | clientName        | remaining_users | Safety_Check  |
++----------+-------------------+-----------------+---------------+
+|       53 | Kurtovest Demo    |             668 | Client intact |
+|      190 | Kapital Reporting |              56 | Client intact |
++----------+-------------------+-----------------+---------------+
+```
+
+---
+
 ## Actions Taken
 
 | Action | Status |
