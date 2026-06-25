@@ -585,10 +585,13 @@ Expected output:
 
 **1. UDM__ is the Kurtosys KAPP Application Database**
 ```
-Before: I did not fully consider that one database holds many clients
-After:  I now understand that every table has a clientId column
-        separating one client's data from another
-        NEVER delete by clientId if other users share that client
+Before: I did not fully understand what UDM__ is and what it contains
+After:  I now understand that UDM__ is the Kurtosys KAPP application
+        database that holds ALL client data across 249 tables
+        Every table has a clientId column that links data to a specific client
+        This means one wrong delete can affect real clients in production
+        I must always identify the clientId and check how many users
+        share that client before doing any deletion
 ```
 
 **2. Always Check Shared vs Dedicated Client First**
