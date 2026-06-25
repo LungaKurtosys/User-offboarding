@@ -16,9 +16,9 @@ data in the Release (REL) environment following the Kurtosys standard offboardin
 
 ---
 
-## Understanding the Database — Multi-Tenant Architecture
+## Understanding the Database — KAPP Architecture
 
-UDM__ is a **multi-tenant database**. This is critical to understand before doing any offboarding work.
+UDM__ is a **KAPP database**. This is critical to understand before doing any offboarding work.
 
 ```
 One database (UDM__) holds data for MANY different clients.
@@ -583,7 +583,7 @@ Expected output:
 
 ### What I Learned
 
-**1. UDM__ is a Multi-Tenant Database**
+**1. UDM__ is a KAPP Database**
 ```
 Before: I did not fully consider that one database holds many clients
 After:  I now understand that every table has a clientId column
