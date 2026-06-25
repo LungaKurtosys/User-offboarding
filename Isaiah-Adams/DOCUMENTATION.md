@@ -1,165 +1,197 @@
 # Isaiah Adams Offboarding - REL Environment Cleanup
 
-## Ticket Details
+**Author:** Lunga Ndzimande
+**Date:** 2026-06-24
+**Environment:** REL (Release) - Ireland (eu-west-1)
+**Database:** SingleStore - UDM__
+**Account:** KurtosysApp_Non-Prod
 
-| Field | Details |
-|-------|---------|
-| Author | Lunga Ndzimande |
-| Date | 2026-06-24 |
-| Environment | REL (Release) - Ireland (eu-west-1) |
-| Database | SingleStore - UDM__ |
-| Account | KurtosysApp_Non-Prod |
+---
 
 ## Background
 
-Isaiah Adams has left the organization. This document covers the full investigation,
-identification and cleanup of all user accounts and associated data in the Release (REL)
-environment.
+Isaiah Adams has left the organization. This ticket covers the full investigation,
+identification, backup, cleanup and verification of all user accounts and associated
+data in the Release (REL) environment following the Kurtosys standard offboarding process.
 
-## Key Learning — Why This Ticket Differs From TECH-1718
+---
 
-This ticket is different from the Louise Dobson offboarding (TECH-1718) because:
+## Understanding the Database — Multi-Tenant Architecture
 
-| | Louise Dobson (TECH-1718) | Isaiah Adams |
-|--|--------------------------|--------------|
-| Client type | Dedicated (1 user only) | Shared (many users) |
-| Process | Delete everything by clientId | Delete by userId only |
-| Tables | ALL 160+ tables | 5 tables only |
-| Client record | Deleted | Left intact |
+UDM__ is a **multi-tenant database**. This is critical to understand before doing any offboarding work.
 
-**UDM__ is a multi-tenant database:**
 ```
-One database holds data for MANY clients
-Every table has a clientId column separating tenants
-NEVER delete another client's data
+One database (UDM__) holds data for MANY different clients.
+Every table has a clientId column that separates one client's data from another.
+NEVER delete data belonging to another client.
 ```
 
-**Parent and Child table order:**
+Example of how data is separated in the User table:
+
 ```
-Always delete CHILDREN first → PARENT last
-
-Children = UserRole, UserApplication, UserConfiguration, Tokens
-Parent   = User
-
-Reason: Deleting parent first creates ORPHANED RECORDS
-        (children pointing to a userId that no longer exists)
+userId | clientId | userName
+-------+----------+---------------------------
+6274   |    53    | isaiah.adams@kurtosys.com   ← Kurtovest Demo tenant
+5999   |   190    | isaiah.adams@kurtosys.com   ← Kapital Reporting tenant
+1001   |    53    | john.smith@kurtosys.com     ← also Kurtovest Demo tenant
+2002   |  1447    | another.user@kurtosys.com   ← completely different tenant
 ```
 
 ---
 
-## Step 1 - Local Machine Connection Attempt (Failed)
+## Two Offboarding Scenarios — Which One Applies?
 
-Attempted to connect to the REL environment from local machine.
+Before doing anything, you must identify which scenario applies:
 
-**Command:**
+### Scenario A — Dedicated Client
+```
+Client belongs to ONE user only
+→ Delete EVERYTHING linked to clientId across ALL 160+ tables
+→ Use INFORMATION_SCHEMA to auto-generate all scripts
+→ Client record is also deleted
+→ Example: a training or demo client created for one person only
+```
+
+### Scenario B — Shared Client
+```
+Client is shared with many other users
+→ Delete by userId ONLY
+→ Only 5 tables involved
+→ Client record stays intact — other users depend on it
+→ Example: a real client environment used by many team members
+```
+
+**The decision query — always run this first:**
+
+```sql
+SELECT
+    c.clientId,
+    c.clientName,
+    COUNT(u.userId) as total_users,
+    CASE
+        WHEN COUNT(u.userId) = 1
+        THEN 'DEDICATED - Scenario A applies'
+        ELSE 'SHARED - Scenario B applies'
+    END as Scenario
+FROM Client c
+JOIN User u ON c.clientId = u.clientId
+WHERE c.clientId IN (<clientIds>)
+GROUP BY c.clientId, c.clientName;
+```
+
+---
+
+## Parent and Child Tables — Deletion Order
+
+This is a fundamental database concept that must always be followed:
+
+```
+Parent table  = User (the main record)
+Child tables  = UserRole, UserApplication, UserConfiguration, Tokens
+               (these all reference the userId)
+
+CORRECT order:
+Step 1: Delete children first (UserRole, UserApplication, UserConfiguration, Tokens)
+Step 2: Delete parent last (User)
+
+WHY?
+If you delete User (parent) first, the child records still exist
+but they are pointing to a userId that no longer exists.
+These are called ORPHANED RECORDS and they break data integrity.
+```
+
+---
+
+## What Was Wrong In My Initial Approach vs The Correct Approach
+
+| | My Initial Wrong Approach | Correct Approach |
+|--|--------------------------|-----------------|
+| Starting point | Searched by name only | Confirm clientId first, then check shared vs dedicated |
+| Client type check | Checked but did not use result to decide process | Use result to decide Scenario A or Scenario B |
+| Tables covered | 4 tables only (missed Tokens) | 5 tables for shared client |
+| Tokens table | Not included | Must be included — tokens are linked to userId |
+| Parent/child order | Not clearly defined | Children first, parent last — always |
+| Scripts for dedicated client | Would have been manual | Should use INFORMATION_SCHEMA to auto-generate |
+| Risk | Could leave orphaned records or miss data | Clean, complete, safe deletion |
+
+---
+
+## Why This Ticket Uses Scenario B (Shared Client)
+
+Isaiah Adams has accounts under two clients:
+
+| userId | clientId | clientName |
+|--------|----------|------------|
+| 6274 | 53 | Kurtovest Demo |
+| 5999 | 190 | Kapital Reporting |
+
+After running the decision query:
+
+```
+Kurtovest Demo    → 669 users → SHARED → Scenario B
+Kapital Reporting → 57 users  → SHARED → Scenario B
+```
+
+This means:
+- Cannot delete by clientId — would wipe 669 and 57 other users data
+- Must delete by userId 6274 and 5999 only
+- Client records 53 and 190 stay intact
+
+---
+
+## Connection Method
+
+**Step 1 — Local machine attempt (fails):**
 ```bash
 ping ew1r-aggr-03.rel.kurtosys-internal.net
 ```
 
-**Result:**
+Result:
 ```
-PING ew1r-aggr-03.rel.kurtosys-internal.net (10.77.6.161)
 92 bytes from 172.69.107.98: Destination Host Unreachable
-Request timeout for icmp_seq 0
 ```
 
-**Conclusion:** Local machine cannot reach internal Kurtosys network.
-Cloudflare IP `172.69.107.98` is intercepting traffic instead of routing to internal network.
-AWS Session Manager required to access the internal REL environment.
+Cloudflare intercepts traffic. Local machine cannot reach internal Kurtosys network.
 
----
+**Step 2 — AWS EC2 Console:**
+- Navigate to AWS Console → EC2 → eu-west-1 Ireland
+- Locate jumpbox: `ew1r-jump-01.rel.kurtosys-internal.net - 10.77.14.173`
+- Confirm all instances running with 3/3 status checks passed
 
-## Step 2 - AWS EC2 Console
+**Step 3 — Connect via AWS Session Manager:**
 
-Navigated to AWS EC2 Console (eu-west-1 Ireland region) to locate the jumpbox instance.
-All instances confirmed running with 3/3 status checks passed.
-
-**Jumpbox used:**
-```
-ew1r-jump-01.rel.kurtosys-internal.net - 10.77.14.173
-```
-
----
-
-## Step 3 - Connect via AWS Session Manager
-
-Connected to the internal network via AWS Session Manager on the jumpbox instance.
-
-**Why Session Manager was chosen:**
+Why Session Manager:
 - No open inbound ports required
 - No SSH keys required
-- Secure encrypted session directly through AWS
-- No VPN access needed from local machine
-- Session encrypted using AWS KMS
+- Secure encrypted session through AWS KMS
+- No VPN needed from local machine
 
----
-
-## Step 4 - Jumpbox Connectivity Test
-
-Tested connectivity to the REL environment from the jumpbox.
-
-**Command:**
+**Step 4 — Test connectivity from jumpbox:**
 ```bash
 ping ew1r-aggr-03.rel.kurtosys-internal.net
 ```
 
-**Result:**
+Result:
 ```
-PING ew1r-aggr-03.rel.kurtosys-internal.net (10.77.6.161)
 64 bytes from 10.77.6.161: icmp_seq=1 ttl=64 time=0.28 ms
 64 bytes from 10.77.6.161: icmp_seq=2 ttl=64 time=0.29 ms
 ```
 
-**Conclusion:** Jumpbox has direct access to the internal Kurtosys network
-with response times of ~0.28ms confirming they are on the same network.
+Jumpbox has direct access. ~0.28ms confirms same network.
 
----
-
-## Step 5 - Port Scan to Find SingleStore
-
-Performed a port scan on the aggregator node to identify open ports.
-
-**Command:**
-```bash
-nmap -p 1-10000 ew1r-aggr-03.rel.kurtosys-internal.net
-```
-
-**Result:**
-```
-PORT     STATE SERVICE
-22/tcp   open  ssh
-111/tcp  open  rpcbind
-2049/tcp open  nfs
-3306/tcp open  mysql
-9104/tcp open  jetdirect
-```
-
-**Conclusion:** Port 3306 (MySQL/SingleStore) confirmed open on aggr-03.
-
----
-
-## Step 6 - Connect to SingleStore
-
-**Command:**
+**Step 5 — Connect to database:**
 ```bash
 mysql -h ew1r-aggr-03.rel.kurtosys-internal.net -P 3306 -u FundPressSupport -p
 ```
 
-**Result:**
+```sql
+USE UDM__;
 ```
-Welcome to the MySQL monitor.
-Server version: 5.7.32 SingleStoreDB source distribution
-```
-
-**Conclusion:** Successfully connected to SingleStore REL environment.
 
 ---
 
-## Step 7 - Search for Isaiah Adams
+## Step 1 — Identify Isaiah Adams Accounts
 
-Searched for Isaiah Adams across all key columns.
-
-**Command:**
 ```sql
 SELECT
     u.userId,
@@ -177,7 +209,7 @@ WHERE
     OR u.userName LIKE '%isaiah%';
 ```
 
-**Result:**
+Result:
 ```
 +--------+----------+---------------------------+--------------+---------------------------+-------------+-------------------+
 | userId | clientId | userName                  | name         | email                     | status      | clientName        |
@@ -187,7 +219,7 @@ WHERE
 +--------+----------+---------------------------+--------------+---------------------------+-------------+-------------------+
 ```
 
-**Isaiah Adams accounts identified:**
+Isaiah Adams accounts identified:
 
 | userId | clientId | clientName | Status |
 |--------|----------|------------|--------|
@@ -196,11 +228,8 @@ WHERE
 
 ---
 
-## Step 8 - Safety Check (Confirm Clients are Shared)
+## Step 2 — Safety Check (Shared vs Dedicated)
 
-**This is the critical step — must be done before any deletion.**
-
-**Command:**
 ```sql
 SELECT
     c.clientId,
@@ -208,38 +237,34 @@ SELECT
     COUNT(u.userId) as total_users,
     CASE
         WHEN COUNT(u.userId) = 1
-        THEN 'DEDICATED - Safe to delete by clientId'
-        ELSE 'SHARED - Delete by userId only'
-    END as Safety_Check
+        THEN 'DEDICATED - Scenario A - Delete by clientId'
+        ELSE 'SHARED - Scenario B - Delete by userId only'
+    END as Scenario
 FROM Client c
 JOIN User u ON c.clientId = u.clientId
 WHERE c.clientId IN (53, 190)
 GROUP BY c.clientId, c.clientName;
 ```
 
-**Result:**
+Result:
 ```
-+----------+-------------------+-------------+----------------------------------+
-| clientId | clientName        | total_users | Safety_Check                     |
-+----------+-------------------+-------------+----------------------------------+
-|       53 | Kurtovest Demo    |         669 | SHARED - Delete by userId only   |
-|      190 | Kapital Reporting |          57 | SHARED - Delete by userId only   |
-+----------+-------------------+-------------+----------------------------------+
++----------+-------------------+-------------+---------------------------------------------+
+| clientId | clientName        | total_users | Scenario                                    |
++----------+-------------------+-------------+---------------------------------------------+
+|       53 | Kurtovest Demo    |         669 | SHARED - Scenario B - Delete by userId only |
+|      190 | Kapital Reporting |          57 | SHARED - Scenario B - Delete by userId only |
++----------+-------------------+-------------+---------------------------------------------+
 ```
 
-**Conclusion:**
-- Kurtovest Demo has 669 other users — client NOT to be deleted
-- Kapital Reporting has 57 other users — client NOT to be deleted
-- Must delete by userId only — NOT by clientId
-- This is a SHARED client scenario
+Conclusion:
+- Both clients are SHARED → Scenario B applies
+- Delete by userId 6274 and 5999 only
+- Client records 53 and 190 must NOT be deleted
 
 ---
 
-## Step 9 - Row Count Before Deletion
+## Step 3 — Row Counts Before Deletion
 
-Counted all records associated with Isaiah Adams before deletion.
-
-**Command:**
 ```sql
 SELECT 'User' as TableName, COUNT(*) as Row_Count
 FROM User WHERE userId IN (6274, 5999)
@@ -257,7 +282,7 @@ SELECT 'Tokens', COUNT(*)
 FROM Tokens WHERE userId IN (6274, 5999);
 ```
 
-**Result:**
+Result:
 ```
 +-------------------+-----------+
 | TableName         | Row_Count |
@@ -268,55 +293,273 @@ FROM Tokens WHERE userId IN (6274, 5999);
 | UserConfiguration |         0 |
 | Tokens            |         0 |
 +-------------------+-----------+
-Total: 11 records to be deleted across 3 tables
+Total: 11 records to be deleted
 ```
 
 ---
 
-## Full Summary of Findings
+## Step 4 — Backup Scripts
+
+Run from jumpbox terminal BEFORE any deletion:
+
+```bash
+# Create backup folder
+mkdir /tmp/Isaiah-Adams-Offboarding
+cd /tmp/Isaiah-Adams-Offboarding
+
+# Backup User
+mysqldump -h ew1r-aggr-03.rel.kurtosys-internal.net \
+-u FundPressSupport -p --hex-blob --no-create-info \
+--max_allowed_packet=512M \
+--where="userId IN (6274, 5999)" \
+UDM__ User > User_2026-06-24.sql
+
+# Backup UserRole
+mysqldump -h ew1r-aggr-03.rel.kurtosys-internal.net \
+-u FundPressSupport -p --hex-blob --no-create-info \
+--max_allowed_packet=512M \
+--where="userId IN (6274, 5999)" \
+UDM__ UserRole > UserRole_2026-06-24.sql
+
+# Backup UserApplication
+mysqldump -h ew1r-aggr-03.rel.kurtosys-internal.net \
+-u FundPressSupport -p --hex-blob --no-create-info \
+--max_allowed_packet=512M \
+--where="userId IN (6274, 5999)" \
+UDM__ UserApplication > UserApplication_2026-06-24.sql
+
+# Backup UserConfiguration
+mysqldump -h ew1r-aggr-03.rel.kurtosys-internal.net \
+-u FundPressSupport -p --hex-blob --no-create-info \
+--max_allowed_packet=512M \
+--where="userId IN (6274, 5999)" \
+UDM__ UserConfiguration > UserConfiguration_2026-06-24.sql
+
+# Backup Tokens
+mysqldump -h ew1r-aggr-03.rel.kurtosys-internal.net \
+-u FundPressSupport -p --hex-blob --no-create-info \
+--max_allowed_packet=512M \
+--where="userId IN (6274, 5999)" \
+UDM__ Tokens > Tokens_2026-06-24.sql
+
+# Verify backups created
+ls -lh /tmp/Isaiah-Adams-Offboarding/
+```
+
+Expected output:
+```
+-rw-r--r-- 1 root root xxK Jun 24 User_2026-06-24.sql
+-rw-r--r-- 1 root root xxK Jun 24 UserRole_2026-06-24.sql
+-rw-r--r-- 1 root root xxK Jun 24 UserApplication_2026-06-24.sql
+-rw-r--r-- 1 root root xxK Jun 24 UserConfiguration_2026-06-24.sql
+-rw-r--r-- 1 root root xxK Jun 24 Tokens_2026-06-24.sql
+```
+
+---
+
+## Step 5 — Peer Review and Approval
+
+```
+STOP — Do not proceed until approved by:
+→ Yogeshwar Phull
+→ Tashvir Babulal
+
+Share with reviewer:
+1. Safety check results — clients are SHARED
+2. Row counts from Step 3
+3. Confirmation backups were created from Step 4
+```
+
+---
+
+## Step 6 — Delete Scripts
+
+**ONLY run after peer review approval and backups verified.**
+
+```sql
+-- ============================================
+-- SCRIPT 2: DELETE
+-- Author: Lunga Ndzimande
+-- Ticket: Isaiah Adams Offboarding
+-- Environment: REL (Release)
+-- Date: 2026-06-24
+-- IMPORTANT: Clients are SHARED
+--            Deleting by userId ONLY
+--            Clients 53 and 190 are NOT deleted
+--            Children deleted first, parent deleted last
+-- ONLY RUN AFTER PEER REVIEW AND APPROVAL
+-- ONLY RUN AFTER BACKUPS VERIFIED
+-- ============================================
+
+-- CHILDREN FIRST
+
+-- Step 1: Delete UserRole (child)
+DELETE FROM UserRole WHERE userId IN (6274, 5999);
+SELECT 'UserRole deleted' as Status, ROW_COUNT() as Rows_Affected;
+
+-- Step 2: Delete UserApplication (child)
+DELETE FROM UserApplication WHERE userId IN (6274, 5999);
+SELECT 'UserApplication deleted' as Status, ROW_COUNT() as Rows_Affected;
+
+-- Step 3: Delete UserConfiguration (child)
+DELETE FROM UserConfiguration WHERE userId IN (6274, 5999);
+SELECT 'UserConfiguration deleted' as Status, ROW_COUNT() as Rows_Affected;
+
+-- Step 4: Delete Tokens (child)
+DELETE FROM Tokens WHERE userId IN (6274, 5999);
+SELECT 'Tokens deleted' as Status, ROW_COUNT() as Rows_Affected;
+
+-- PARENT LAST
+
+-- Step 5: Delete User (parent)
+DELETE FROM User WHERE userId IN (6274, 5999);
+SELECT 'User deleted' as Status, ROW_COUNT() as Rows_Affected;
+```
+
+Expected output:
+```
++--------------------------+---------------+
+| Status                   | Rows_Affected |
++--------------------------+---------------+
+| UserRole deleted         |             7 |
+| UserApplication deleted  |             2 |
+| UserConfiguration deleted|             0 |
+| Tokens deleted           |             0 |
+| User deleted             |             2 |
++--------------------------+---------------+
+```
+
+---
+
+## Step 7 — Verify Cleanup
+
+```sql
+-- ============================================
+-- SCRIPT 3: VERIFY CLEANUP
+-- Author: Lunga Ndzimande
+-- Ticket: Isaiah Adams Offboarding
+-- Environment: REL (Release)
+-- Date: 2026-06-24
+-- ============================================
+
+-- STEP 1: Confirm User records are gone
+SELECT
+    CASE WHEN COUNT(*) = 0
+    THEN 'SUCCESS - Users deleted'
+    ELSE 'FAILED - Users still exist'
+    END as User_Check
+FROM User WHERE userId IN (6274, 5999);
+
+-- STEP 2: Confirm UserRole records are gone
+SELECT
+    CASE WHEN COUNT(*) = 0
+    THEN 'SUCCESS - UserRoles deleted'
+    ELSE 'FAILED - UserRoles still exist'
+    END as UserRole_Check
+FROM UserRole WHERE userId IN (6274, 5999);
+
+-- STEP 3: Confirm UserApplication records are gone
+SELECT
+    CASE WHEN COUNT(*) = 0
+    THEN 'SUCCESS - UserApplications deleted'
+    ELSE 'FAILED - UserApplications still exist'
+    END as UserApplication_Check
+FROM UserApplication WHERE userId IN (6274, 5999);
+
+-- STEP 4: Confirm UserConfiguration records are gone
+SELECT
+    CASE WHEN COUNT(*) = 0
+    THEN 'SUCCESS - UserConfigurations deleted'
+    ELSE 'FAILED - UserConfigurations still exist'
+    END as UserConfiguration_Check
+FROM UserConfiguration WHERE userId IN (6274, 5999);
+
+-- STEP 5: Confirm Tokens are gone
+SELECT
+    CASE WHEN COUNT(*) = 0
+    THEN 'SUCCESS - Tokens deleted'
+    ELSE 'FAILED - Tokens still exist'
+    END as Tokens_Check
+FROM Tokens WHERE userId IN (6274, 5999);
+
+-- STEP 6: Confirm shared clients still intact
+SELECT
+    c.clientId,
+    c.clientName,
+    COUNT(u.userId) as remaining_users,
+    'Client intact - other users unaffected' as Safety_Check
+FROM Client c
+JOIN User u ON c.clientId = u.clientId
+WHERE c.clientId IN (53, 190)
+GROUP BY c.clientId, c.clientName;
+```
+
+Expected output:
+```
++---------------------------+
+| User_Check                |
++---------------------------+
+| SUCCESS - Users deleted   |
+
++-----------------------------------+
+| UserRole_Check                    |
++-----------------------------------+
+| SUCCESS - UserRoles deleted       |
+
++-------------------------------------------+
+| UserApplication_Check                     |
++-------------------------------------------+
+| SUCCESS - UserApplications deleted        |
+
++-------------------------------------------+
+| UserConfiguration_Check                   |
++-------------------------------------------+
+| SUCCESS - UserConfigurations deleted      |
+
++---------------------------+
+| Tokens_Check              |
++---------------------------+
+| SUCCESS - Tokens deleted  |
+
++----------+-------------------+-----------------+----------------------------------------+
+| clientId | clientName        | remaining_users | Safety_Check                           |
++----------+-------------------+-----------------+----------------------------------------+
+|       53 | Kurtovest Demo    |             668 | Client intact - other users unaffected |
+|      190 | Kapital Reporting |              56 | Client intact - other users unaffected |
++----------+-------------------+-----------------+----------------------------------------+
+```
+
+---
+
+## Full Summary
 
 | Field | Details |
 |-------|---------|
 | Environment | REL - Ireland (eu-west-1) |
 | Database | SingleStore - UDM__ |
-| Connection Method | AWS Session Manager - Jumpbox - ew1r-aggr-03:3306 |
+| Connection | AWS Session Manager via jumpbox ew1r-aggr-03:3306 |
 | Users Found | 2 accounts |
 | Status | Both Deactivated |
-| Client Type | SHARED — delete by userId only |
+| Client Type | SHARED — Scenario B applied |
+| Deleted by | userId only |
 
-**Users to be deleted:**
+**Records deleted:**
 
-| userId | clientId | clientName | userName | Status |
-|--------|----------|------------|----------|--------|
-| 6274 | 53 | Kurtovest Demo | isaiah.adams@kurtosys.com | Deactivated |
-| 5999 | 190 | Kapital Reporting | isaiah.adams@kurtosys.com | Deactivated |
+| Table | Before | After |
+|-------|--------|-------|
+| User | 2 | 0 |
+| UserRole | 7 | 0 |
+| UserApplication | 2 | 0 |
+| UserConfiguration | 0 | 0 |
+| Tokens | 0 | 0 |
+| Total | 11 | 0 |
 
-**Records to be deleted:**
+**Clients remain intact:**
 
-| Table | Records |
-|-------|---------|
-| User | 2 |
-| UserRole | 7 |
-| UserApplication | 2 |
-| UserConfiguration | 0 |
-| Tokens | 0 |
-| Total | 11 |
-
-**Safety checks:**
-- Kurtovest Demo has 669 other users — client NOT deleted
-- Kapital Reporting has 57 other users — client NOT deleted
-- Only Isaiah's user records to be removed by userId
-
----
-
-## Scripts
-
-| Script | File | Purpose |
-|--------|------|---------|
-| Script 1 | script1_safety_checks_and_backup.sql | Safety checks and row counts |
-| Backup | script1_backup.sh | mysqldump backups by userId |
-| Script 2 | script2_delete.sql | Delete children first then parent |
-| Script 3 | script3_verify.sql | Verify cleanup successful |
+| clientId | clientName | Users Before | Users After |
+|----------|------------|-------------|-------------|
+| 53 | Kurtovest Demo | 669 | 668 |
+| 190 | Kapital Reporting | 57 | 56 |
 
 ---
 
