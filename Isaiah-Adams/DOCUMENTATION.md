@@ -576,3 +576,212 @@ Expected output:
 | Delete scripts run | Pending ⏳ |
 | Verification — all counts zero | Pending ⏳ |
 | Ticket closure | Pending ⏳ |
+
+---
+
+## Summary — What I Learned and What I Fixed
+
+### What I Learned
+
+**1. UDM__ is a Multi-Tenant Database**
+```
+Before: I did not fully consider that one database holds many clients
+After:  I now understand that every table has a clientId column
+        separating one client's data from another
+        NEVER delete by clientId if other users share that client
+```
+
+**2. Always Check Shared vs Dedicated Client First**
+```
+Before: I jumped straight into searching for the user and deleting
+After:  I now always run the safety check first:
+
+        SELECT clientId, clientName, COUNT(userId) as total_users
+        FROM Client c JOIN User u ON c.clientId = u.clientId
+        WHERE c.clientId IN (53, 190)
+        GROUP BY c.clientId, c.clientName;
+
+        Result told me:
+        Kurtovest Demo    = 669 users → SHARED → delete by userId only
+        Kapital Reporting = 57 users  → SHARED → delete by userId only
+```
+
+**3. Two Scenarios Exist — I Was Using the Wrong One**
+```
+Before: I treated this like a dedicated client ticket
+        and only deleted from 4 tables
+
+After:  I now understand there are two scenarios:
+
+        Scenario A — Dedicated client (1 user only)
+        → Delete everything by clientId across ALL 160+ tables
+        → Use INFORMATION_SCHEMA to auto-generate all scripts
+        → Client record is also deleted
+
+        Scenario B — Shared client (many users)
+        → Delete by userId ONLY
+        → Only 5 tables involved
+        → Client record stays intact
+        → Isaiah Adams falls under Scenario B
+```
+
+**4. Parent and Child Table Relationship**
+```
+Before: I did not clearly understand or follow parent/child deletion order
+
+After:  I now understand:
+        Parent  = User table (the main record)
+        Children = UserRole, UserApplication, UserConfiguration, Tokens
+                  (these all reference the userId)
+
+        If you delete the parent (User) first:
+        → Children still exist but point to a userId that no longer exists
+        → These are called ORPHANED RECORDS
+        → This breaks data integrity
+
+        Correct order:
+        Step 1: Delete children first
+        Step 2: Delete parent last
+```
+
+**5. The Tokens Table Was Completely Missing**
+```
+Before: My scripts only covered:
+        - User
+        - UserRole
+        - UserApplication
+        - UserConfiguration
+
+After:  I now include Tokens as well:
+        - UserRole          (child)
+        - UserApplication   (child)
+        - UserConfiguration (child)
+        - Tokens            (child)
+        - User              (parent — last)
+
+        Tokens are linked to userId not clientId
+        They must always be backed up and deleted by userId
+```
+
+---
+
+### What I Fixed in My Scripts
+
+**Fix 1 — Added the safety check query at the start**
+
+Wrong (what I had before):
+```sql
+-- Jumped straight to searching by name
+SELECT * FROM User WHERE name LIKE '%Isaiah%';
+```
+
+Fixed (what it is now):
+```sql
+-- First confirm if client is shared or dedicated
+SELECT
+    c.clientId,
+    c.clientName,
+    COUNT(u.userId) as total_users,
+    CASE
+        WHEN COUNT(u.userId) = 1
+        THEN 'DEDICATED - Scenario A - Delete by clientId'
+        ELSE 'SHARED - Scenario B - Delete by userId only'
+    END as Scenario
+FROM Client c
+JOIN User u ON c.clientId = u.clientId
+WHERE c.clientId IN (53, 190)
+GROUP BY c.clientId, c.clientName;
+```
+
+**Fix 2 — Added Tokens to row counts**
+
+Wrong (what I had before):
+```sql
+SELECT 'User' as TableName, COUNT(*) FROM User WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'UserRole', COUNT(*) FROM UserRole WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'UserApplication', COUNT(*) FROM UserApplication WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'UserConfiguration', COUNT(*) FROM UserConfiguration WHERE userId IN (6274, 5999);
+-- Tokens was MISSING
+```
+
+Fixed (what it is now):
+```sql
+SELECT 'User' as TableName, COUNT(*) FROM User WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'UserRole', COUNT(*) FROM UserRole WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'UserApplication', COUNT(*) FROM UserApplication WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'UserConfiguration', COUNT(*) FROM UserConfiguration WHERE userId IN (6274, 5999)
+UNION ALL
+SELECT 'Tokens', COUNT(*) FROM Tokens WHERE userId IN (6274, 5999);
+-- Tokens NOW INCLUDED
+```
+
+**Fix 3 — Added Tokens to backup scripts**
+
+Wrong (what I had before):
+```bash
+# Only backed up 3 tables
+mysqldump ... UDM__ User > User_2026-06-24.sql
+mysqldump ... UDM__ UserRole > UserRole_2026-06-24.sql
+mysqldump ... UDM__ UserApplication > UserApplication_2026-06-24.sql
+# UserConfiguration and Tokens were MISSING
+```
+
+Fixed (what it is now):
+```bash
+# All 5 tables backed up
+mysqldump ... UDM__ User > User_2026-06-24.sql
+mysqldump ... UDM__ UserRole > UserRole_2026-06-24.sql
+mysqldump ... UDM__ UserApplication > UserApplication_2026-06-24.sql
+mysqldump ... UDM__ UserConfiguration > UserConfiguration_2026-06-24.sql
+mysqldump ... UDM__ Tokens > Tokens_2026-06-24.sql
+```
+
+**Fix 4 — Fixed delete script order (children first, parent last)**
+
+Wrong (what I had before):
+```sql
+-- Order was not clearly defined
+DELETE FROM UserRole WHERE userId IN (6274, 5999);
+DELETE FROM UserApplication WHERE userId IN (6274, 5999);
+DELETE FROM UserConfiguration WHERE userId IN (6274, 5999);
+DELETE FROM User WHERE userId IN (6274, 5999);
+-- Tokens was MISSING
+-- WarpdriveCache update was added incorrectly
+--   (not needed for shared client — only relevant for dedicated client)
+```
+
+Fixed (what it is now):
+```sql
+-- CHILDREN FIRST
+DELETE FROM UserRole WHERE userId IN (6274, 5999);
+DELETE FROM UserApplication WHERE userId IN (6274, 5999);
+DELETE FROM UserConfiguration WHERE userId IN (6274, 5999);
+DELETE FROM Tokens WHERE userId IN (6274, 5999);  -- NOW INCLUDED
+
+-- PARENT LAST
+DELETE FROM User WHERE userId IN (6274, 5999);
+-- WarpdriveCache update REMOVED — not applicable for shared client
+```
+
+**Fix 5 — Added Tokens to verify script**
+
+Wrong (what I had before):
+```sql
+-- Only verified 4 tables
+-- No Tokens check
+-- WarpdriveCache check was incorrectly included
+```
+
+Fixed (what it is now):
+```sql
+-- Verifies all 5 tables
+-- Tokens check NOW INCLUDED
+-- Confirms shared clients still intact with remaining users
+-- WarpdriveCache check REMOVED — not applicable for shared client
+```
