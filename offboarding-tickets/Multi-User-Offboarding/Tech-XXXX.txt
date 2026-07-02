@@ -1,0 +1,104 @@
+Tech-XXXX — Offboard Users from Release Environment
+
+Users to Offboard:
+  - Mashaole Mogale
+  - Zelda Miller
+  - Divashan Naicker
+  - Maahir Petersen
+  - Anneliese Thomas
+  - Richard Fitzmaurice
+
+=======================================================================================================================================================================================================================
+STEP 1 — Find All User Accounts (run script1_safety_checks.sql — Step 1)
+
+-- Paste results here after running in MySQL
+userId|clientId|userName|name|email|status|clientName
+------+--------+--------+----+-----+------+----------
+
+
+=======================================================================================================================================================================================================================
+STEP 2 — Identify Dedicated vs Shared Clients (run script1_safety_checks.sql — Step 2 & 3)
+
+-- Replace <replace_with_clientIds_from_step1> with actual clientIds found above
+-- Paste results here
+
+clientId|clientName|total_users|Scenario
+--------+----------+-----------+--------
+
+
+DEDICATED CLIENTS (Scenario A — delete by clientId across all tables):
+  clientId | clientName
+  ---------+-----------
+  (fill in after Step 2)
+
+SHARED CLIENTS (Scenario B — delete by userId only across 5 tables):
+  clientId | clientName | userIds to delete
+  ---------+------------+-----------------
+  (fill in after Step 2)
+
+=======================================================================================================================================================================================================================
+STEP 3 — Row Counts Before Deletion (run script1_safety_checks.sql — Step 4)
+
+-- Replace <replace_with_userIds> with actual userIds for Scenario B users
+-- For Scenario A, use the row count generator from Tech-3310 pattern
+
+TableName        |Row_Count|
+-----------------+---------+
+User             |         |
+UserRole         |         |
+UserApplication  |         |
+UserConfiguration|         |
+Tokens           |         |
+
+-- Scenario A dedicated client row counts (if applicable):
+-- (paste INFORMATION_SCHEMA generated counts here)
+
+=======================================================================================================================================================================================================================
+STEP 4 — Backups Taken (run backup.sh)
+
+-- Update backup.sh with actual userIds and dedicated clientIds before running
+-- Paste ls -lh output here after backups complete
+
+(paste backup file listing here)
+
+=======================================================================================================================================================================================================================
+STEP 5 — Peer Review
+
+Reviewed by: _______________
+Date: _______________
+Approved: YES / NO
+
+=======================================================================================================================================================================================================================
+STEP 6 — Delete Done
+
+SCENARIO B (Shared — userId deletes):
+-- Run script2b_delete_shared.sql with actual userIds
+-- Paste mysql output here
+
+(paste delete output here)
+
+SCENARIO A (Dedicated — clientId deletes):
+-- Run script2a_delete_dedicated.sql with actual dedicated clientId(s)
+-- Paste mysql output here
+
+(paste delete output here)
+
+=======================================================================================================================================================================================================================
+STEP 7 — Verification (run script3_verify.sql)
+
+-- Replace placeholders with actual userIds and clientIds
+-- Paste results here
+
+TableName        |Remaining|Status |
+-----------------+---------+-------+
+User             |        0|SUCCESS|
+UserRole         |        0|SUCCESS|
+UserApplication  |        0|SUCCESS|
+UserConfiguration|        0|SUCCESS|
+Tokens           |        0|SUCCESS|
+
+=======================================================================================================================================================================================================================
+STEP 8 — Ticket Closed
+
+Date closed: _______________
+Notes: _______________

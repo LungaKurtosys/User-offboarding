@@ -1,0 +1,1588 @@
+Tech-3310
+
+Client Confirmation
+
+clientId|clientName           |s3Folder                            |
+--------+---------------------+------------------------------------+
+    1458|Training Isaiah Adams|7bad4681-11e1-40b2-a854-51e37c098e74|
+
+=======================================================================================================================================================================================================================
+
+Users and Tokens 
+
+Select  * from Tokens tok
+inner join User usr on usr.userId = tok.userId
+where usr.clientId =1458
+and usr.userName like '%_user';
+
+No Tokens found
+ 
+=======================================================================================================================================================================================================================
+Generate Row Counts 
+
+select CONCAT('select ''', TABLE_NAME, ''' as tablename, count(1) as count from UDM__.', TABLE_NAME, ' where clientId = 1458 union all')
+from INFORMATION_SCHEMA.COLUMNS
+where TABLE_SCHEMA = 'UDM__'
+and COLUMN_NAME like '%clientId%'
+order by TABLE_NAME asc ;
+ 
+=======================================================================================================================================================================================================================
+Generate Backup Queries 
+
+SELECT CONCAT('mysqldump -h0 -uroot -p'''' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ', TABLE_NAME, ' > ', TABLE_NAME, '2026-02-04.sql')
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_SCHEMA = 'UDM__'
+AND COLUMN_NAME LIKE '%clientId%'
+ORDER BY TABLE_NAME ASC;
+ 
+=======================================================================================================================================================================================================================
+Generate Delete Queries 
+
+SELECT CONCAT('DELETE FROM ', TABLE_NAME, ' WHERE clientId = 1458;')
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_SCHEMA = 'UDM__'
+AND COLUMN_NAME LIKE '%clientId%'
+ORDER BY TABLE_NAME ASC;
+=======================================================================================================================================================================================================================
+tablename                            |count|
+-------------------------------------+-----+
+AIProvider                           |    0|
+AIProviderCall                       |    0|
+Activity                             |   12|
+AllocationProperties                 |    0|
+Allocations                          |    0|
+AllocationsBackup                    |    0|
+AllocationsBackupStub                |    0|
+Application                          |    0|
+ApplicationAsset                     |    0|
+ApplicationClientConfiguration       |    0|
+ApplicationClientConfigurationVersion|    0|
+ApplicationConfiguration             |    0|
+ApplicationConfigurationVersion      |    0|
+ApplicationEmail                     |    0|
+ApplicationStyle                     |    0|
+ApplicationStyleVersion              |    0|
+ApplicationUpgrade                   |    0|
+ApprovalGroups                       |    0|
+BusinessDayCalendars                 |    0|
+CRMProvider                          |    0|
+CRMProviderMapping                   |    0|
+Client                               |    1|
+ClientAllowedLinks                   |    0|
+ClientConfiguration                  |    0|
+ClientLink                           |    0|
+ClientResourceCounts                 |    0|
+Commentaries                         |    0|
+CommentariesBackup                   |    0|
+CommentaryTypes                      |    0|
+Component                            |    0|
+ComponentBackup                      |    0|
+ComponentGraph                       |    0|
+ComponentGraphBackup                 |    0|
+ComponentMeta                        |    0|
+ComponentMetaBackup                  |    0|
+ConditionalMarketAnalysis            |    0|
+ConditionalMarketAnalysisBackup      |    0|
+Contact                              |    0|
+ContactGroup                         |    0|
+Content                              |    0|
+ContentAction                        |    0|
+ContentCache                         |    0|
+ContentData                          |    0|
+ContentType                          |    0|
+ContentTypeHierarchy                 |    0|
+Cultures                             |    0|
+Dashboard                            |    0|
+DataEntitlementList                  |    0|
+Dataset                              |    0|
+DatasetBackup                        |    0|
+DatasetDataAdapter                   |    0|
+DisclaimerTypes                      |    0|
+Disclaimers                          |    0|
+DisclaimersBackup                    |    0|
+DistributionList                     |    0|
+DocumentBackup                       |    0|
+DocumentBackupStub                   |    0|
+DocumentEntitlementMetaSummary       |    0|
+DocumentEntitlementScheme            |    0|
+DocumentGeneration                   |    0|
+DocumentGenerationBatch              |    0|
+DocumentMetaData                     |    0|
+DocumentNotificationDelivery         |    0|
+DocumentNotificationSubscription     |    0|
+DocumentPackage                      |    0|
+DocumentProductionClientCount        |    0|
+DocumentSecurityGroup                |    0|
+Documents                            |    0|
+DocumentsRetrievalStats              |    0|
+DomainWhitelist                      |    0|
+DraftWorkflow                        |    0|
+EntitlementPresets                   |    0|
+Entity                               |    0|
+EntityBackup                         |    0|
+EntityBackupStub                     |    0|
+EnvironmentVariables                 |    0|
+ExtendedProperty                     |    0|
+FailureLog                           |    0|
+FairQueueCapacitySummary             |    0|
+FairQueueClientCapacity              |    0|
+FairQueueJob                         |    0|
+FairQueueJobTiming                   |    0|
+FormatCode                           |    0|
+FtpBucket                            |    0|
+FundList                             |    0|
+FundListBackup                       |    0|
+FundManager                          |    0|
+FundManagerBackup                    |    0|
+FundManagerEntitlementList           |    0|
+FundManagerKeyFacts                  |    0|
+Hierarchy                            |    0|
+HierarchyTemplate                    |    0|
+HistoricalDatasetProperties          |    0|
+HistoricalDatasets                   |    0|
+HistoricalDatasetsBackup             |    0|
+KAPP_human_users_audit               |    0|
+KAPP_non_human_users_audit           |    1|
+LayoutComponent                      |    0|
+LayoutConfiguration                  |    0|
+LayoutConfigurationBackup            |    0|
+LayoutConfigurationType              |    0|
+LoaderSnapshots                      |    0|
+LookupListValue                      |    0|
+OfficeTemplates                      |    0|
+OfficeTemplatesBackup                |    0|
+PageTemplate                         |    0|
+PageTemplateAsset                    |    0|
+Portfolio                            |    0|
+PortfolioBackup                      |    0|
+PortfolioEntity                      |    0|
+PortfolioEntityBackup                |    0|
+Properties                           |    0|
+RegimePeriod                         |    0|
+RegimeType                           |    0|
+Relationship                         |    0|
+ReportingConfiguration               |    0|
+ReportingConfigurationBackup         |    0|
+ReportingConfigurationReference      |    0|
+ReportingConfigurationReferenceBackup|    0|
+Role                                 |    0|
+SavedSearchEntity                    |    0|
+Scenario                             |    0|
+ScenarioBackup                       |    0|
+ScenarioManager                      |    0|
+ScenarioManagerBackup                |    0|
+ScenarioReport                       |    0|
+ScenarioReportBackup                 |    0|
+ScheduleConfiguration                |    0|
+Secrets                              |    0|
+SegmentationTags                     |    0|
+Snapshot                             |    0|
+SnapshotConfig                       |    0|
+StatisticProperties                  |    0|
+Statistics                           |    0|
+StatisticsBackup                     |    0|
+StatisticsBackupStub                 |    0|
+Strategies                           |    1|
+Theme                                |    0|
+ThemeVersion                         |    0|
+Timeseries                           |    0|
+TimeseriesBackup                     |    0|
+TimeseriesBackupStub                 |    0|
+TimeseriesProperties                 |    0|
+TransactionProperties                |    0|
+Transactions                         |    0|
+TransactionsBackup                   |    0|
+TranslationProviderConfiguration     |    0|
+TranslationProviderLanguages         |    0|
+TranslationProviderProject           |    0|
+Translations                         |    0|
+TranslationsBackup                   |    0|
+TranslationsLog                      |    0|
+User                                 |    2|
+UserMetaProperties                   |    0|
+UserRegistrationRequests             |    0|
+ValidationSchema                     |    0|
+ValidationSchemaLinks                |    0|
+VersionHistory                       |    0|
+VersionHistoryAsset                  |    0|
+VersionHistoryContent                |    0|
+VersionHistoryHierarchy              |    0|
+VersionHistoryMeta                   |    0|
+WarpdriveCache                       |    0|
+Watermark                            |    0|
+WordpressMultiDomains                |    0|
+WordpressProxies                     |    0|
+WordpressRedirects                   |    0|
+WordpressRevision                    |    0|
+WordpressRevisionConfig              |    0|
+WordpressSites                       |    0|
+WordpressWildcardRedirects           |    0|
+Workflow                             |    0|
+WorkflowEmailTemplate                |    0|
+WorkflowExceptionReasons             |    0|
+WorkflowInitiationLocks              |    0|
+WorkflowRun                          |    0|
+WorkflowRunException                 |    0|
+WorkflowRunItem                      |    0|
+WorkflowRunItemInputsHistory         |    0|
+WorkflowRunItemStatusHistory         |    0|
+WorkflowStep                         |    0|
+
+=======================================================================================================================================================================================================================
+Backup Scripts
+
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ AIProvider > AIProvider2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ AIProviderCall > AIProviderCall2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Activity > Activity2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ AllocationProperties > AllocationProperties2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Allocations > Allocations2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ AllocationsBackup > AllocationsBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ AllocationsBackupStub > AllocationsBackupStub2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Application > Application2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApplicationAsset > ApplicationAsset2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApplicationClientConfiguration > ApplicationClientConfiguration2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApplicationClientConfigurationVersion > ApplicationClientConfigurationVersion2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApplicationConfiguration > ApplicationConfiguration2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApplicationConfigurationVersion > ApplicationConfigurationVersion2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApplicationEmail > ApplicationEmail2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApplicationStyle > ApplicationStyle2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApplicationStyleVersion > ApplicationStyleVersion2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApplicationUpgrade > ApplicationUpgrade2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ApprovalGroups > ApprovalGroups2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ BusinessDayCalendars > BusinessDayCalendars2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ CRMProvider > CRMProvider2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ CRMProviderMapping > CRMProviderMapping2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Client > Client2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ClientAllowedLinks > ClientAllowedLinks2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ClientConfiguration > ClientConfiguration2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ClientLink > ClientLink2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ClientResourceCounts > ClientResourceCounts2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Commentaries > Commentaries2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ CommentariesBackup > CommentariesBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ CommentaryTypes > CommentaryTypes2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Component > Component2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ComponentBackup > ComponentBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ComponentGraph > ComponentGraph2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ComponentGraphBackup > ComponentGraphBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ComponentMeta > ComponentMeta2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ComponentMetaBackup > ComponentMetaBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ConditionalMarketAnalysis > ConditionalMarketAnalysis2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ConditionalMarketAnalysisBackup > ConditionalMarketAnalysisBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Contact > Contact2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ContactGroup > ContactGroup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Content > Content2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ContentAction > ContentAction2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ContentCache > ContentCache2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ContentData > ContentData2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ContentType > ContentType2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ContentTypeHierarchy > ContentTypeHierarchy2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Cultures > Cultures2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Dashboard > Dashboard2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DataEntitlementList > DataEntitlementList2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Dataset > Dataset2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DatasetBackup > DatasetBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DatasetDataAdapter > DatasetDataAdapter2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DisclaimerTypes > DisclaimerTypes2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Disclaimers > Disclaimers2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DisclaimersBackup > DisclaimersBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DistributionList > DistributionList2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentBackup > DocumentBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentBackupStub > DocumentBackupStub2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentEntitlementMetaSummary > DocumentEntitlementMetaSummary2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentEntitlementScheme > DocumentEntitlementScheme2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentGeneration > DocumentGeneration2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentGenerationBatch > DocumentGenerationBatch2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentMetaData > DocumentMetaData2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentNotificationDelivery > DocumentNotificationDelivery2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentNotificationSubscription > DocumentNotificationSubscription2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentPackage > DocumentPackage2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentProductionClientCount > DocumentProductionClientCount2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentSecurityGroup > DocumentSecurityGroup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Documents > Documents2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DocumentsRetrievalStats > DocumentsRetrievalStats2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DomainWhitelist > DomainWhitelist2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ DraftWorkflow > DraftWorkflow2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ EntitlementPresets > EntitlementPresets2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Entity > Entity2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ EntityBackup > EntityBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ EntityBackupStub > EntityBackupStub2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ EnvironmentVariables > EnvironmentVariables2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ExtendedProperty > ExtendedProperty2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FailureLog > FailureLog2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FairQueueCapacitySummary > FairQueueCapacitySummary2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FairQueueClientCapacity > FairQueueClientCapacity2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FairQueueJob > FairQueueJob2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FairQueueJobTiming > FairQueueJobTiming2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FormatCode > FormatCode2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FtpBucket > FtpBucket2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FundList > FundList2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FundListBackup > FundListBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FundManager > FundManager2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FundManagerBackup > FundManagerBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FundManagerEntitlementList > FundManagerEntitlementList2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ FundManagerKeyFacts > FundManagerKeyFacts2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Hierarchy > Hierarchy2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ HierarchyTemplate > HierarchyTemplate2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ HistoricalDatasetProperties > HistoricalDatasetProperties2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ HistoricalDatasets > HistoricalDatasets2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ HistoricalDatasetsBackup > HistoricalDatasetsBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ KAPP_human_users_audit > KAPP_human_users_audit2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ KAPP_non_human_users_audit > KAPP_non_human_users_audit2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ LayoutComponent > LayoutComponent2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ LayoutConfiguration > LayoutConfiguration2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ LayoutConfigurationBackup > LayoutConfigurationBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ LayoutConfigurationType > LayoutConfigurationType2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ LoaderSnapshots > LoaderSnapshots2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ LookupListValue > LookupListValue2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ OfficeTemplates > OfficeTemplates2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ OfficeTemplatesBackup > OfficeTemplatesBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ PageTemplate > PageTemplate2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ PageTemplateAsset > PageTemplateAsset2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Portfolio > Portfolio2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ PortfolioBackup > PortfolioBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ PortfolioEntity > PortfolioEntity2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ PortfolioEntityBackup > PortfolioEntityBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Properties > Properties2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ RegimePeriod > RegimePeriod2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ RegimeType > RegimeType2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Relationship > Relationship2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ReportingConfiguration > ReportingConfiguration2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ReportingConfigurationBackup > ReportingConfigurationBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ReportingConfigurationReference > ReportingConfigurationReference2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ReportingConfigurationReferenceBackup > ReportingConfigurationReferenceBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Role > Role2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ SavedSearchEntity > SavedSearchEntity2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Scenario > Scenario2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ScenarioBackup > ScenarioBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ScenarioManager > ScenarioManager2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ScenarioManagerBackup > ScenarioManagerBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ScenarioReport > ScenarioReport2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ScenarioReportBackup > ScenarioReportBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ScheduleConfiguration > ScheduleConfiguration2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Secrets > Secrets2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ SegmentationTags > SegmentationTags2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Snapshot > Snapshot2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ SnapshotConfig > SnapshotConfig2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ StatisticProperties > StatisticProperties2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Statistics > Statistics2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ StatisticsBackup > StatisticsBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ StatisticsBackupStub > StatisticsBackupStub2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Strategies > Strategies2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Theme > Theme2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ThemeVersion > ThemeVersion2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Timeseries > Timeseries2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TimeseriesBackup > TimeseriesBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TimeseriesBackupStub > TimeseriesBackupStub2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TimeseriesProperties > TimeseriesProperties2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TransactionProperties > TransactionProperties2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Transactions > Transactions2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TransactionsBackup > TransactionsBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TranslationProviderConfiguration > TranslationProviderConfiguration2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TranslationProviderLanguages > TranslationProviderLanguages2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TranslationProviderProject > TranslationProviderProject2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Translations > Translations2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TranslationsBackup > TranslationsBackup2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ TranslationsLog > TranslationsLog2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ User > User2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ UserMetaProperties > UserMetaProperties2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ UserRegistrationRequests > UserRegistrationRequests2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ValidationSchema > ValidationSchema2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ ValidationSchemaLinks > ValidationSchemaLinks2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ VersionHistory > VersionHistory2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ VersionHistoryAsset > VersionHistoryAsset2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ VersionHistoryContent > VersionHistoryContent2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ VersionHistoryHierarchy > VersionHistoryHierarchy2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ VersionHistoryMeta > VersionHistoryMeta2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WarpdriveCache > WarpdriveCache2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Watermark > Watermark2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WordpressMultiDomains > WordpressMultiDomains2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WordpressProxies > WordpressProxies2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WordpressRedirects > WordpressRedirects2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WordpressRevision > WordpressRevision2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WordpressRevisionConfig > WordpressRevisionConfig2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WordpressSites > WordpressSites2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WordpressWildcardRedirects > WordpressWildcardRedirects2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ Workflow > Workflow2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WorkflowEmailTemplate > WorkflowEmailTemplate2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WorkflowExceptionReasons > WorkflowExceptionReasons2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WorkflowInitiationLocks > WorkflowInitiationLocks2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WorkflowRun > WorkflowRun2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WorkflowRunException > WorkflowRunException2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WorkflowRunItem > WorkflowRunItem2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WorkflowRunItemInputsHistory > WorkflowRunItemInputsHistory2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WorkflowRunItemStatusHistory > WorkflowRunItemStatusHistory2026-06-22.sql
+mysqldump -h0 -uroot -p'' --hex-blob --no-create-info --max_allowed_packet=512M --where="clientId = 1458" UDM__ WorkflowStep > WorkflowStep2026-06-22.sql
+
+=======================================================================================================================================================================================================================
+Delete Scripts
+
+DELETE FROM AIProvider WHERE clientId = 1458;
+DELETE FROM AIProviderCall WHERE clientId = 1458;
+DELETE FROM Activity WHERE clientId = 1458;
+DELETE FROM AllocationProperties WHERE clientId = 1458;
+DELETE FROM Allocations WHERE clientId = 1458;
+DELETE FROM AllocationsBackup WHERE clientId = 1458;
+DELETE FROM AllocationsBackupStub WHERE clientId = 1458;
+DELETE FROM Application WHERE clientId = 1458;
+DELETE FROM ApplicationAsset WHERE clientId = 1458;
+DELETE FROM ApplicationClientConfiguration WHERE clientId = 1458;
+DELETE FROM ApplicationClientConfigurationVersion WHERE clientId = 1458;
+DELETE FROM ApplicationConfiguration WHERE clientId = 1458;
+DELETE FROM ApplicationConfigurationVersion WHERE clientId = 1458;
+DELETE FROM ApplicationEmail WHERE clientId = 1458;
+DELETE FROM ApplicationStyle WHERE clientId = 1458;
+DELETE FROM ApplicationStyleVersion WHERE clientId = 1458;
+DELETE FROM ApplicationUpgrade WHERE clientId = 1458;
+DELETE FROM ApprovalGroups WHERE clientId = 1458;
+DELETE FROM BusinessDayCalendars WHERE clientId = 1458;
+DELETE FROM CRMProvider WHERE clientId = 1458;
+DELETE FROM CRMProviderMapping WHERE clientId = 1458;
+DELETE FROM Client WHERE clientId = 1458;
+DELETE FROM ClientAllowedLinks WHERE clientId = 1458;
+DELETE FROM ClientConfiguration WHERE clientId = 1458;
+DELETE FROM ClientLink WHERE clientId = 1458;
+DELETE FROM ClientResourceCounts WHERE clientId = 1458;
+DELETE FROM Commentaries WHERE clientId = 1458;
+DELETE FROM CommentariesBackup WHERE clientId = 1458;
+DELETE FROM CommentaryTypes WHERE clientId = 1458;
+DELETE FROM Component WHERE clientId = 1458;
+DELETE FROM ComponentBackup WHERE clientId = 1458;
+DELETE FROM ComponentGraph WHERE clientId = 1458;
+DELETE FROM ComponentGraphBackup WHERE clientId = 1458;
+DELETE FROM ComponentMeta WHERE clientId = 1458;
+DELETE FROM ComponentMetaBackup WHERE clientId = 1458;
+DELETE FROM ConditionalMarketAnalysis WHERE clientId = 1458;
+DELETE FROM ConditionalMarketAnalysisBackup WHERE clientId = 1458;
+DELETE FROM Contact WHERE clientId = 1458;
+DELETE FROM ContactGroup WHERE clientId = 1458;
+DELETE FROM Content WHERE clientId = 1458;
+DELETE FROM ContentAction WHERE clientId = 1458;
+DELETE FROM ContentCache WHERE clientId = 1458;
+DELETE FROM ContentData WHERE clientId = 1458;
+DELETE FROM ContentType WHERE clientId = 1458;
+DELETE FROM ContentTypeHierarchy WHERE clientId = 1458;
+DELETE FROM Cultures WHERE clientId = 1458;
+DELETE FROM Dashboard WHERE clientId = 1458;
+DELETE FROM DataEntitlementList WHERE clientId = 1458;
+DELETE FROM Dataset WHERE clientId = 1458;
+DELETE FROM DatasetBackup WHERE clientId = 1458;
+DELETE FROM DatasetDataAdapter WHERE clientId = 1458;
+DELETE FROM DisclaimerTypes WHERE clientId = 1458;
+DELETE FROM Disclaimers WHERE clientId = 1458;
+DELETE FROM DisclaimersBackup WHERE clientId = 1458;
+DELETE FROM DistributionList WHERE clientId = 1458;
+DELETE FROM DocumentBackup WHERE clientId = 1458;
+DELETE FROM DocumentBackupStub WHERE clientId = 1458;
+DELETE FROM DocumentEntitlementMetaSummary WHERE clientId = 1458;
+DELETE FROM DocumentEntitlementScheme WHERE clientId = 1458;
+DELETE FROM DocumentGeneration WHERE clientId = 1458;
+DELETE FROM DocumentGenerationBatch WHERE clientId = 1458;
+DELETE FROM DocumentMetaData WHERE clientId = 1458;
+DELETE FROM DocumentNotificationDelivery WHERE clientId = 1458;
+DELETE FROM DocumentNotificationSubscription WHERE clientId = 1458;
+DELETE FROM DocumentPackage WHERE clientId = 1458;
+DELETE FROM DocumentProductionClientCount WHERE clientId = 1458;
+DELETE FROM DocumentSecurityGroup WHERE clientId = 1458;
+DELETE FROM Documents WHERE clientId = 1458;
+DELETE FROM DocumentsRetrievalStats WHERE clientId = 1458;
+DELETE FROM DomainWhitelist WHERE clientId = 1458;
+DELETE FROM DraftWorkflow WHERE clientId = 1458;
+DELETE FROM EntitlementPresets WHERE clientId = 1458;
+DELETE FROM Entity WHERE clientId = 1458;
+DELETE FROM EntityBackup WHERE clientId = 1458;
+DELETE FROM EntityBackupStub WHERE clientId = 1458;
+DELETE FROM EnvironmentVariables WHERE clientId = 1458;
+DELETE FROM ExtendedProperty WHERE clientId = 1458;
+DELETE FROM FailureLog WHERE clientId = 1458;
+DELETE FROM FairQueueCapacitySummary WHERE clientId = 1458;
+DELETE FROM FairQueueClientCapacity WHERE clientId = 1458;
+DELETE FROM FairQueueJob WHERE clientId = 1458;
+DELETE FROM FairQueueJobTiming WHERE clientId = 1458;
+DELETE FROM FormatCode WHERE clientId = 1458;
+DELETE FROM FtpBucket WHERE clientId = 1458;
+DELETE FROM FundList WHERE clientId = 1458;
+DELETE FROM FundListBackup WHERE clientId = 1458;
+DELETE FROM FundManager WHERE clientId = 1458;
+DELETE FROM FundManagerBackup WHERE clientId = 1458;
+DELETE FROM FundManagerEntitlementList WHERE clientId = 1458;
+DELETE FROM FundManagerKeyFacts WHERE clientId = 1458;
+DELETE FROM Hierarchy WHERE clientId = 1458;
+DELETE FROM HierarchyTemplate WHERE clientId = 1458;
+DELETE FROM HistoricalDatasetProperties WHERE clientId = 1458;
+DELETE FROM HistoricalDatasets WHERE clientId = 1458;
+DELETE FROM HistoricalDatasetsBackup WHERE clientId = 1458;
+DELETE FROM KAPP_human_users_audit WHERE clientId = 1458;
+DELETE FROM KAPP_non_human_users_audit WHERE clientId = 1458;
+DELETE FROM LayoutComponent WHERE clientId = 1458;
+DELETE FROM LayoutConfiguration WHERE clientId = 1458;
+DELETE FROM LayoutConfigurationBackup WHERE clientId = 1458;
+DELETE FROM LayoutConfigurationType WHERE clientId = 1458;
+DELETE FROM LoaderSnapshots WHERE clientId = 1458;
+DELETE FROM LookupListValue WHERE clientId = 1458;
+DELETE FROM OfficeTemplates WHERE clientId = 1458;
+DELETE FROM OfficeTemplatesBackup WHERE clientId = 1458;
+DELETE FROM PageTemplate WHERE clientId = 1458;
+DELETE FROM PageTemplateAsset WHERE clientId = 1458;
+DELETE FROM Portfolio WHERE clientId = 1458;
+DELETE FROM PortfolioBackup WHERE clientId = 1458;
+DELETE FROM PortfolioEntity WHERE clientId = 1458;
+DELETE FROM PortfolioEntityBackup WHERE clientId = 1458;
+DELETE FROM Properties WHERE clientId = 1458;
+DELETE FROM RegimePeriod WHERE clientId = 1458;
+DELETE FROM RegimeType WHERE clientId = 1458;
+DELETE FROM Relationship WHERE clientId = 1458;
+DELETE FROM ReportingConfiguration WHERE clientId = 1458;
+DELETE FROM ReportingConfigurationBackup WHERE clientId = 1458;
+DELETE FROM ReportingConfigurationReference WHERE clientId = 1458;
+DELETE FROM ReportingConfigurationReferenceBackup WHERE clientId = 1458;
+DELETE FROM Role WHERE clientId = 1458;
+DELETE FROM SavedSearchEntity WHERE clientId = 1458;
+DELETE FROM Scenario WHERE clientId = 1458;
+DELETE FROM ScenarioBackup WHERE clientId = 1458;
+DELETE FROM ScenarioManager WHERE clientId = 1458;
+DELETE FROM ScenarioManagerBackup WHERE clientId = 1458;
+DELETE FROM ScenarioReport WHERE clientId = 1458;
+DELETE FROM ScenarioReportBackup WHERE clientId = 1458;
+DELETE FROM ScheduleConfiguration WHERE clientId = 1458;
+DELETE FROM Secrets WHERE clientId = 1458;
+DELETE FROM SegmentationTags WHERE clientId = 1458;
+DELETE FROM Snapshot WHERE clientId = 1458;
+DELETE FROM SnapshotConfig WHERE clientId = 1458;
+DELETE FROM StatisticProperties WHERE clientId = 1458;
+DELETE FROM Statistics WHERE clientId = 1458;
+DELETE FROM StatisticsBackup WHERE clientId = 1458;
+DELETE FROM StatisticsBackupStub WHERE clientId = 1458;
+DELETE FROM Strategies WHERE clientId = 1458;
+DELETE FROM Theme WHERE clientId = 1458;
+DELETE FROM ThemeVersion WHERE clientId = 1458;
+DELETE FROM Timeseries WHERE clientId = 1458;
+DELETE FROM TimeseriesBackup WHERE clientId = 1458;
+DELETE FROM TimeseriesBackupStub WHERE clientId = 1458;
+DELETE FROM TimeseriesProperties WHERE clientId = 1458;
+DELETE FROM TransactionProperties WHERE clientId = 1458;
+DELETE FROM Transactions WHERE clientId = 1458;
+DELETE FROM TransactionsBackup WHERE clientId = 1458;
+DELETE FROM TranslationProviderConfiguration WHERE clientId = 1458;
+DELETE FROM TranslationProviderLanguages WHERE clientId = 1458;
+DELETE FROM TranslationProviderProject WHERE clientId = 1458;
+DELETE FROM Translations WHERE clientId = 1458;
+DELETE FROM TranslationsBackup WHERE clientId = 1458;
+DELETE FROM TranslationsLog WHERE clientId = 1458;
+DELETE FROM User WHERE clientId = 1458;
+DELETE FROM UserMetaProperties WHERE clientId = 1458;
+DELETE FROM UserRegistrationRequests WHERE clientId = 1458;
+DELETE FROM ValidationSchema WHERE clientId = 1458;
+DELETE FROM ValidationSchemaLinks WHERE clientId = 1458;
+DELETE FROM VersionHistory WHERE clientId = 1458;
+DELETE FROM VersionHistoryAsset WHERE clientId = 1458;
+DELETE FROM VersionHistoryContent WHERE clientId = 1458;
+DELETE FROM VersionHistoryHierarchy WHERE clientId = 1458;
+DELETE FROM VersionHistoryMeta WHERE clientId = 1458;
+DELETE FROM WarpdriveCache WHERE clientId = 1458;
+DELETE FROM Watermark WHERE clientId = 1458;
+DELETE FROM WordpressMultiDomains WHERE clientId = 1458;
+DELETE FROM WordpressProxies WHERE clientId = 1458;
+DELETE FROM WordpressRedirects WHERE clientId = 1458;
+DELETE FROM WordpressRevision WHERE clientId = 1458;
+DELETE FROM WordpressRevisionConfig WHERE clientId = 1458;
+DELETE FROM WordpressSites WHERE clientId = 1458;
+DELETE FROM WordpressWildcardRedirects WHERE clientId = 1458;
+DELETE FROM Workflow WHERE clientId = 1458;
+DELETE FROM WorkflowEmailTemplate WHERE clientId = 1458;
+DELETE FROM WorkflowExceptionReasons WHERE clientId = 1458;
+DELETE FROM WorkflowInitiationLocks WHERE clientId = 1458;
+DELETE FROM WorkflowRun WHERE clientId = 1458;
+DELETE FROM WorkflowRunException WHERE clientId = 1458;
+DELETE FROM WorkflowRunItem WHERE clientId = 1458;
+DELETE FROM WorkflowRunItemInputsHistory WHERE clientId = 1458;
+DELETE FROM WorkflowRunItemStatusHistory WHERE clientId = 1458;
+DELETE FROM WorkflowStep WHERE clientId = 1458;
+
+=======================================================================================================================================================================================================================
+Backups Taken 
+
+-rw-r--r-- 1 root root 1463 Jun 22 09:05 AIProvider2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 AIProviderCall2026-06-22.sql
+-rw-r--r-- 1 root root 3212 Jun 22 09:05 Activity2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 AllocationProperties2026-06-22.sql
+-rw-r--r-- 1 root root 1467 Jun 22 09:05 Allocations2026-06-22.sql
+-rw-r--r-- 1 root root 1491 Jun 22 09:05 AllocationsBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 AllocationsBackupStub2026-06-22.sql
+-rw-r--r-- 1 root root 1467 Jun 22 09:05 Application2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 ApplicationAsset2026-06-22.sql
+-rw-r--r-- 1 root root 1543 Jun 22 09:05 ApplicationClientConfiguration2026-06-22.sql
+-rw-r--r-- 1 root root 1571 Jun 22 09:05 ApplicationClientConfigurationVersion2026-06-22.sql
+-rw-r--r-- 1 root root 1519 Jun 22 09:05 ApplicationConfiguration2026-06-22.sql
+-rw-r--r-- 1 root root 1547 Jun 22 09:05 ApplicationConfigurationVersion2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 ApplicationEmail2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 ApplicationStyle2026-06-22.sql
+-rw-r--r-- 1 root root 1515 Jun 22 09:05 ApplicationStyleVersion2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 ApplicationUpgrade2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 ApprovalGroups2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 BusinessDayCalendars2026-06-22.sql
+-rw-r--r-- 1 root root 1467 Jun 22 09:05 CRMProvider2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 CRMProviderMapping2026-06-22.sql
+-rw-r--r-- 1 root root 2408 Jun 22 09:05 Client2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 ClientAllowedLinks2026-06-22.sql
+-rw-r--r-- 1 root root 1499 Jun 22 09:05 ClientConfiguration2026-06-22.sql
+-rw-r--r-- 1 root root 1463 Jun 22 09:05 ClientLink2026-06-22.sql
+-rw-r--r-- 1 root root 1241 Jun 22 09:05 ClientResourceCounts2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 Commentaries2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 CommentariesBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 CommentaryTypes2026-06-22.sql
+-rw-r--r-- 1 root root 1459 Jun 22 09:05 Component2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 ComponentBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 ComponentGraph2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 ComponentGraphBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1475 Jun 22 09:05 ComponentMeta2026-06-22.sql
+-rw-r--r-- 1 root root 1499 Jun 22 09:05 ComponentMetaBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1523 Jun 22 09:05 ConditionalMarketAnalysis2026-06-22.sql
+-rw-r--r-- 1 root root 1547 Jun 22 09:05 ConditionalMarketAnalysisBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1451 Jun 22 09:05 Contact2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 ContactGroup2026-06-22.sql
+-rw-r--r-- 1 root root 1451 Jun 22 09:05 Content2026-06-22.sql
+-rw-r--r-- 1 root root 1475 Jun 22 09:05 ContentAction2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 ContentCache2026-06-22.sql
+-rw-r--r-- 1 root root 1467 Jun 22 09:05 ContentData2026-06-22.sql
+-rw-r--r-- 1 root root 1467 Jun 22 09:05 ContentType2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 ContentTypeHierarchy2026-06-22.sql
+-rw-r--r-- 1 root root 1455 Jun 22 09:05 Cultures2026-06-22.sql
+-rw-r--r-- 1 root root 1459 Jun 22 09:05 Dashboard2026-06-22.sql
+-rw-r--r-- 1 root root 1499 Jun 22 09:05 DataEntitlementList2026-06-22.sql
+-rw-r--r-- 1 root root 1451 Jun 22 09:05 Dataset2026-06-22.sql
+-rw-r--r-- 1 root root 1475 Jun 22 09:05 DatasetBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 DatasetDataAdapter2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 DisclaimerTypes2026-06-22.sql
+-rw-r--r-- 1 root root 1467 Jun 22 09:05 Disclaimers2026-06-22.sql
+-rw-r--r-- 1 root root 1491 Jun 22 09:05 DisclaimersBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 DistributionList2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 DocumentBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 DocumentBackupStub2026-06-22.sql
+-rw-r--r-- 1 root root 1543 Jun 22 09:05 DocumentEntitlementMetaSummary2026-06-22.sql
+-rw-r--r-- 1 root root 1523 Jun 22 09:05 DocumentEntitlementScheme2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 DocumentGeneration2026-06-22.sql
+-rw-r--r-- 1 root root 1515 Jun 22 09:05 DocumentGenerationBatch2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 DocumentMetaData2026-06-22.sql
+-rw-r--r-- 1 root root 1535 Jun 22 09:05 DocumentNotificationDelivery2026-06-22.sql
+-rw-r--r-- 1 root root 1551 Jun 22 09:05 DocumentNotificationSubscription2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 DocumentPackage2026-06-22.sql
+-rw-r--r-- 1 root root 1539 Jun 22 09:05 DocumentProductionClientCount2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 DocumentSecurityGroup2026-06-22.sql
+-rw-r--r-- 1 root root 1459 Jun 22 09:05 Documents2026-06-22.sql
+-rw-r--r-- 1 root root 1515 Jun 22 09:05 DocumentsRetrievalStats2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 DomainWhitelist2026-06-22.sql
+-rw-r--r-- 1 root root 1475 Jun 22 09:05 DraftWorkflow2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 EntitlementPresets2026-06-22.sql
+-rw-r--r-- 1 root root 1447 Jun 22 09:05 Entity2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 EntityBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 EntityBackupStub2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 EnvironmentVariables2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 ExtendedProperty2026-06-22.sql
+-rw-r--r-- 1 root root 1463 Jun 22 09:05 FailureLog2026-06-22.sql
+-rw-r--r-- 1 root root 1519 Jun 22 09:05 FairQueueCapacitySummary2026-06-22.sql
+-rw-r--r-- 1 root root 1515 Jun 22 09:05 FairQueueClientCapacity2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 FairQueueJob2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 FairQueueJobTiming2026-06-22.sql
+-rw-r--r-- 1 root root 1463 Jun 22 09:05 FormatCode2026-06-22.sql
+-rw-r--r-- 1 root root 1459 Jun 22 09:05 FtpBucket2026-06-22.sql
+-rw-r--r-- 1 root root 1455 Jun 22 09:05 FundList2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 FundListBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1467 Jun 22 09:05 FundManager2026-06-22.sql
+-rw-r--r-- 1 root root 1491 Jun 22 09:05 FundManagerBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1527 Jun 22 09:05 FundManagerEntitlementList2026-06-22.sql
+-rw-r--r-- 1 root root 1499 Jun 22 09:05 FundManagerKeyFacts2026-06-22.sql
+-rw-r--r-- 1 root root 1459 Jun 22 09:05 Hierarchy2026-06-22.sql
+-rw-r--r-- 1 root root 1491 Jun 22 09:05 HierarchyTemplate2026-06-22.sql
+-rw-r--r-- 1 root root 1531 Jun 22 09:05 HistoricalDatasetProperties2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 HistoricalDatasets2026-06-22.sql
+-rw-r--r-- 1 root root 1519 Jun 22 09:05 HistoricalDatasetsBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1241 Jun 22 09:05 KAPP_human_users_audit2026-06-22.sql
+-rw-r--r-- 1 root root 1241 Jun 22 09:05 KAPP_non_human_users_audit2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 LayoutComponent2026-06-22.sql
+-rw-r--r-- 1 root root 1499 Jun 22 09:05 LayoutConfiguration2026-06-22.sql
+-rw-r--r-- 1 root root 1523 Jun 22 09:05 LayoutConfigurationBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1515 Jun 22 09:05 LayoutConfigurationType2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 LoaderSnapshots2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 LookupListValue2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 OfficeTemplates2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 OfficeTemplatesBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 PageTemplate2026-06-22.sql
+-rw-r--r-- 1 root root 1491 Jun 22 09:05 PageTemplateAsset2026-06-22.sql
+-rw-r--r-- 1 root root 1459 Jun 22 09:05 Portfolio2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 PortfolioBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 PortfolioEntity2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 PortfolioEntityBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1463 Jun 22 09:05 Properties2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 RegimePeriod2026-06-22.sql
+-rw-r--r-- 1 root root 1463 Jun 22 09:05 RegimeType2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 Relationship2026-06-22.sql
+-rw-r--r-- 1 root root 1511 Jun 22 09:05 ReportingConfiguration2026-06-22.sql
+-rw-r--r-- 1 root root 1535 Jun 22 09:05 ReportingConfigurationBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1547 Jun 22 09:05 ReportingConfigurationReference2026-06-22.sql
+-rw-r--r-- 1 root root 1571 Jun 22 09:05 ReportingConfigurationReferenceBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1439 Jun 22 09:05 Role2026-06-22.sql
+-rw-r--r-- 1 root root 1491 Jun 22 09:05 SavedSearchEntity2026-06-22.sql
+-rw-r--r-- 1 root root 1455 Jun 22 09:05 Scenario2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 ScenarioBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 ScenarioManager2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 ScenarioManagerBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 ScenarioReport2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 ScenarioReportBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 ScheduleConfiguration2026-06-22.sql
+-rw-r--r-- 1 root root 1451 Jun 22 09:05 Secrets2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 SegmentationTags2026-06-22.sql
+-rw-r--r-- 1 root root 1455 Jun 22 09:05 Snapshot2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 SnapshotConfig2026-06-22.sql
+-rw-r--r-- 1 root root 1499 Jun 22 09:05 StatisticProperties2026-06-22.sql
+-rw-r--r-- 1 root root 1463 Jun 22 09:05 Statistics2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 StatisticsBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 StatisticsBackupStub2026-06-22.sql
+-rw-r--r-- 1 root root 1588 Jun 22 09:05 Strategies2026-06-22.sql
+-rw-r--r-- 1 root root 1443 Jun 22 09:05 Theme2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 ThemeVersion2026-06-22.sql
+-rw-r--r-- 1 root root 1463 Jun 22 09:05 Timeseries2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 TimeseriesBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 TimeseriesBackupStub2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 TimeseriesProperties2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 TransactionProperties2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 Transactions2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 TransactionsBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1551 Jun 22 09:05 TranslationProviderConfiguration2026-06-22.sql
+-rw-r--r-- 1 root root 1535 Jun 22 09:05 TranslationProviderLanguages2026-06-22.sql
+-rw-r--r-- 1 root root 1527 Jun 22 09:05 TranslationProviderProject2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 Translations2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 TranslationsBackup2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 TranslationsLog2026-06-22.sql
+-rw-r--r-- 1 root root 1934 Jun 22 09:05 User2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 UserMetaProperties2026-06-22.sql
+-rw-r--r-- 1 root root 1519 Jun 22 09:05 UserRegistrationRequests2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 ValidationSchema2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 ValidationSchemaLinks2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 VersionHistory2026-06-22.sql
+-rw-r--r-- 1 root root 1499 Jun 22 09:05 VersionHistoryAsset2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 VersionHistoryContent2026-06-22.sql
+-rw-r--r-- 1 root root 1515 Jun 22 09:05 VersionHistoryHierarchy2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 VersionHistoryMeta2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 WarpdriveCache2026-06-22.sql
+-rw-r--r-- 1 root root 1459 Jun 22 09:05 Watermark2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 WordpressMultiDomains2026-06-22.sql
+-rw-r--r-- 1 root root 1487 Jun 22 09:05 WordpressProxies2026-06-22.sql
+-rw-r--r-- 1 root root 1495 Jun 22 09:05 WordpressRedirects2026-06-22.sql
+-rw-r--r-- 1 root root 1491 Jun 22 09:05 WordpressRevision2026-06-22.sql
+-rw-r--r-- 1 root root 1515 Jun 22 09:05 WordpressRevisionConfig2026-06-22.sql
+-rw-r--r-- 1 root root 1479 Jun 22 09:05 WordpressSites2026-06-22.sql
+-rw-r--r-- 1 root root 1527 Jun 22 09:05 WordpressWildcardRedirects2026-06-22.sql
+-rw-r--r-- 1 root root 1455 Jun 22 09:05 Workflow2026-06-22.sql
+-rw-r--r-- 1 root root 1507 Jun 22 09:05 WorkflowEmailTemplate2026-06-22.sql
+-rw-r--r-- 1 root root 1519 Jun 22 09:05 WorkflowExceptionReasons2026-06-22.sql
+-rw-r--r-- 1 root root 1515 Jun 22 09:05 WorkflowInitiationLocks2026-06-22.sql
+-rw-r--r-- 1 root root 1467 Jun 22 09:05 WorkflowRun2026-06-22.sql
+-rw-r--r-- 1 root root 1503 Jun 22 09:05 WorkflowRunException2026-06-22.sql
+-rw-r--r-- 1 root root 1483 Jun 22 09:05 WorkflowRunItem2026-06-22.sql
+-rw-r--r-- 1 root root 1535 Jun 22 09:05 WorkflowRunItemInputsHistory2026-06-22.sql
+-rw-r--r-- 1 root root 1535 Jun 22 09:05 WorkflowRunItemStatusHistory2026-06-22.sql
+-rw-r--r-- 1 root root 1471 Jun 22 09:05 WorkflowStep2026-06-22.sql
+root@ew1r-aggr-03:/tmp/tech-3310#
+=======================================================================================================================================================================================================================
+Delete done 
+
+mysql> DELETE FROM AIProvider WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM AIProviderCall WHERE clientId = 1458;
+;
+DELETE FROM ApplicationStyle WHERE clientId = 1458;
+DELETE FROM ApplicationStyleVersion WHERE clientId = 1458;
+DELETE FROM ApplicationUpgrade WHERE clientId = 1458;
+DELETE FROM ApprovalGroups WHERE clientId = 1458;
+DELETE FROM BusinessDayCalendars WHERE clientId = 1458;
+DELETE FROM CRMProvider WHERE clientId = 1458;
+DELETE FROM CRMProviderMapping WHERE clientId = 1458;
+DELETE FROM Client WHERE clientId = 1458;
+DELETE FROM ClientAllowedLinks WHERE clientId = 1458;
+DELETE FROM ClientConfiguration WHERE clientId = 1458;
+DELETE FROM ClientLink WHERE clientId = 1458;
+DELETE FROM ClientResourceCounts WHERE clientId = 1458;
+DELETE FROM Commentaries WHERE clientId = 1458;
+DELETE FROM CommentariesBackup WHERE clientId = 1458;
+DELETE FROM CommentaryTypes WHERE clientId = 1458;
+DELETE FROM Component WHERE clientId = 1458;
+DELETE FROM ComponentBackup WHERE clientId = 1458;
+DELETE FROM ComponentGraph WHERE clientId = 1458;
+DELETE FROM ComponentGraphBackup WHERE clientId = 1458;
+DELETE FROM ComponentMeta WHERE clientId = 1458;
+DELETE FROM ComponentMetaBackup WHERE clientId = 1458;
+DELETE FROM ConditionalMarketAnalysis WHERE clientId = 1458;
+DELETE FROM ConditionalMarketAnalysisBackup WHERE clientId = 1458;
+DELETE FROM Contact WHERE clientId = 1458;
+DELETE FROM ContactGroup WHERE clientId = 1458;
+DELETE FROM Content WHERE clientId = 1458;
+DELETE FROM ContentAction WHERE clientId = 1458;
+DELETE FROM ContentCache WHERE clientId = 1458;
+DELETE FROM ContentData WHERE clientId = 1458;
+DELETE FROM ContentType WHERE clientId = 1458;
+DELETE FROM ContentTypeHierarchy WHERE clientId = 1458;
+DELETE FROM Cultures WHERE clientId = 1458;
+DELETE FROM Dashboard WHERE clientId = 1458;
+DELETE FROM DataEntitlementList WHERE clientId = 1458;
+DELETE FROM Dataset WHERE clientId = 1458;
+DELETE FROM DatasetBackup WHERE clientId = 1458;
+DELETE FROM DatasetDataAdapter WHERE clientId = 1458;
+DELETE FROM DisclaimerTypes WHERE clientId = 1458;
+DELETE FROM Disclaimers WHERE clientId = 1458;
+DELETE FROM DisclaimersBackup WHERE clientId = 1458;
+DELETE FROM DistributionList WHERE clientId = 1458;
+DELETE FROM DocumentBackup WHERE clientId = 1458;
+DELETE FROM DocumentBackupStub WHERE clientId = 1458;
+DELETE FROM DocumentEntitlementMetaSummary WHERE clientId = 1458;
+DELETE FROM DocumentEntitlementScheme WHERE clQuery OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Activity WHERE clientId = 1458;
+ientId = 1458;
+DELETE FROM DocumentGeneration WHERE clientId = 1458;
+DELETE FROM DocumentGenerationBatch WHERE clientId = 1458;
+DELETE FROM DocumentMetaData WHERE clientId = 1458;
+DELETE FROM DocumentNotificationDelivery WHERE clientId = 1458;
+DELETE FROM DocumentNotificationSubscription WHERE clientId = 1458;
+DELETE FROM DocumentPackage WHERE clientId = 1458;
+DELETE FROM DocumentProductionClientCount WHERE clientId = 1458;
+DELETE FROM DocumentSecurityGroup WHERE clientId = 1458;
+DELETE FROM Documents WHERE clientId = 1458;
+DELETE FROM DocumentsRetrievalStats WHERE clientId = 1458;
+DELETE FROM DomainWhitelist WHERE clientId = 1458;
+DELETE FROM DraftWorkflow WHERE clientId = 1458;
+DELETE FROM EntitlementPresets WHERE clientId = 1458;
+DELETE FROM Entity WHERE clientId = 1458;
+DELETE FROM EntityBackup WHERE clientId = 1458;
+DELETE FROM EntityBackupStub WHERE clientId = 1458;
+DELETE FROM EnvironmentVariables WHERE clientId = 1458;
+DELETE FROM ExtendedProperty WHERE clientId = 1458;
+DELETE FROM FailureLog WHERE clientId = 1458;
+DELETE FROM FairQueueCapacitySummary WHERE clientId = 1458;
+DELETE FROM FairQueueClientCapacity WHERE clientId = 1458;
+DELETQuery OK, 12 rows affected (0.05 sec)
+
+mysql> DELETE FROM AllocationProperties WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM Allocations WHERE clientId = 1458;
+EQuery OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM AllocationsBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM AllocationsBackupStub WHERE clientId = 1458;
+cket WHERE clientId = 1458;
+DELETE FROM FundList WHERQuery OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM Application WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM ApplicationAsset WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM ApplicationClientConfiguration WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM ApplicationClientConfigurationVersion WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM ApplicationConfiguration WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM ApplicationConfigurationVersion WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ApplicationEmail WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ApplicationStyle WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM ApplicationStyleVersion WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM ApplicationUpgrade WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM ApprovalGroups WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM BusinessDayCalendars WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM CRMProvider WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM CRMProviderMapping WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM Client WHERE clientId = 1458;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> DELETE FROM ClientAllowedLinks WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM ClientConfiguration WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM ClientLink WHERE clientId = 1458;
+FROM LookupListValue Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM ClientResourceCounts WHERE clientId = 1458;
+WHERE clientId = 1458;
+DELETE FROM OfficeTemplates WHEREERROR 1288 (HY000): The target table ClientResourceCounts of the DELETE is not updatable
+mysql> DELETE FROM Commentaries WHERE clientId = 1458;
+ELETE FROM OfficeTemplatesBacQuery OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM CommentariesBackup WHERE clientId = 1458;
+WHERE clientId = 1458;
+DELETE FROM PageTemplate WHQuery OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM CommentaryTypes WHERE clientId = 1458;
+ Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Component WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ComponentBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM ComponentGraph WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ComponentGraphBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM ComponentMeta WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ComponentMetaBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ConditionalMarketAnalysis WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ConditionalMarketAnalysisBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM Contact WHERE clientId = 1458;
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> DELETE FROM ContactGroup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> DELETE FROM Content WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ContentAction WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ContentCache WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ContentData WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ContentType WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ContentTypeHierarchy WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Cultures WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM Dashboard WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DataEntitlementList WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Dataset WHERE clientId = 1458;
+EQuery OK, 0 rows affected (0.15 sec)
+
+mysql> DELETE FROM DatasetBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DatasetDataAdapter WHERE clientId = 1458;
+uQuery OK, 0 rows affected (0.35 sec)
+
+mysql> DELETE FROM DisclaimerTypes WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Disclaimers WHERE clientId = 1458;
+TQuery OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DisclaimersBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DistributionList WHERE clientId = 1458;
+cQuery OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM DocumentBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DocumentBackupStub WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM DocumentEntitlementMetaSummary WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DocumentEntitlementScheme WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM DocumentGeneration WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DocumentGenerationBatch WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DocumentMetaData WHERE clientId = 1458;
+IQuery OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM DocumentNotificationDelivery WHERE clientId = 1458;
+EQuery OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM DocumentNotificationSubscription WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DocumentPackage WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM DocumentProductionClientCount WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM DocumentSecurityGroup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Documents WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DocumentsRetrievalStats WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM DomainWhitelist WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM DraftWorkflow WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM EntitlementPresets WHERE clientId = 1458;
+nQuery OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM Entity WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM EntityBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM EntityBackupStub WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM EnvironmentVariables WHERE clientId = 1458;
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> DELETE FROM ExtendedProperty WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM FailureLog WHERE clientId = 1458;
+hQuery OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM FairQueueCapacitySummary WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM FairQueueClientCapacity WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM FairQueueJob WHERE clientId = 1458;
+ WQuery OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM FairQueueJobTiming WHERE clientId = 1458;
+nQuery OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM FormatCode WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM FtpBucket WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM FundList WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM FundListBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM FundManager WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM FundManagerBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM FundManagerEntitlementList WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM FundManagerKeyFacts WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM Hierarchy WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM HierarchyTemplate WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM HistoricalDatasetProperties WHERE clientId = 1458;
+ 1458;
+DELETE FROM WordpressSites WHERE clientId = 1458;
+DELETQuery OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM HistoricalDatasets WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM HistoricalDatasetsBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.35 sec)
+
+mysql> DELETE FROM KAPP_human_users_audit WHERE clientId = 1458;
+ERROR 1288 (HY000): The target table KAPP_human_users_audit of the DELETE is not updatable
+mysql> DELETE FROM KAPP_non_human_users_audit WHERE clientId = 1458;
+ERROR 1288 (HY000): The target table KAPP_non_human_users_audit of the DELETE is not updatable
+mysql> DELETE FROM LayoutComponent WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM LayoutConfiguration WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM LayoutConfigurationBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM LayoutConfigurationType WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM LoaderSnapshots WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM LookupListValue WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM OfficeTemplates WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM OfficeTemplatesBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.47 sec)
+
+mysql> DELETE FROM PageTemplate WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM PageTemplateAsset WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Portfolio WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM PortfolioBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM PortfolioEntity WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM PortfolioEntityBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM Properties WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM RegimePeriod WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM RegimeType WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Relationship WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ReportingConfiguration WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM ReportingConfigurationBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ReportingConfigurationReference WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ReportingConfigurationReferenceBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Role WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM SavedSearchEntity WHERE clientId = 1458;
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> DELETE FROM Scenario WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ScenarioBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ScenarioManager WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ScenarioManagerBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ScenarioReport WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ScenarioReportBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ScheduleConfiguration WHERE clientId = 1458;
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> DELETE FROM Secrets WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM SegmentationTags WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM Snapshot WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM SnapshotConfig WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM StatisticProperties WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM Statistics WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM StatisticsBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM StatisticsBackupStub WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM Strategies WHERE clientId = 1458;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> DELETE FROM Theme WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ThemeVersion WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM Timeseries WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM TimeseriesBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> DELETE FROM TimeseriesBackupStub WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM TimeseriesProperties WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM TransactionProperties WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM Transactions WHERE clientId = 1458;
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> DELETE FROM TransactionsBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM TranslationProviderConfiguration WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM TranslationProviderLanguages WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM TranslationProviderProject WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Translations WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM TranslationsBackup WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM TranslationsLog WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM User WHERE clientId = 1458;
+Query OK, 2 rows affected (0.04 sec)
+
+mysql> DELETE FROM UserMetaProperties WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM UserRegistrationRequests WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM ValidationSchema WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM ValidationSchemaLinks WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM VersionHistory WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM VersionHistoryAsset WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM VersionHistoryContent WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM VersionHistoryHierarchy WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM VersionHistoryMeta WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM WarpdriveCache WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM Watermark WHERE clientId = 1458;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> DELETE FROM WordpressMultiDomains WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM WordpressProxies WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM WordpressRedirects WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM WordpressRevision WHERE clientId = 1458;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> DELETE FROM WordpressRevisionConfig WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM WordpressSites WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM WordpressWildcardRedirects WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM Workflow WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM WorkflowEmailTemplate WHERE clientId = 1458;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELETE FROM WorkflowExceptionReasons WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM WorkflowInitiationLocks WHERE clientId = 1458;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELETE FROM WorkflowRun WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM WorkflowRunException WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM WorkflowRunItem WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM WorkflowRunItemInputsHistory WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELETE FROM WorkflowRunItemStatusHistory WHERE clientId = 1458;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELETE FROM WorkflowStep WHERE clientId = 1458;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql>
+
+=======================================================================================================================================================================================================================
+Row Counts After Deletion
+
+tablename                            |count|
+-------------------------------------+-----+
+AIProvider                           |    0|
+AIProviderCall                       |    0|
+Activity                             |    0|
+AllocationProperties                 |    0|
+Allocations                          |    0|
+AllocationsBackup                    |    0|
+AllocationsBackupStub                |    0|
+Application                          |    0|
+ApplicationAsset                     |    0|
+ApplicationClientConfiguration       |    0|
+ApplicationClientConfigurationVersion|    0|
+ApplicationConfiguration             |    0|
+ApplicationConfigurationVersion      |    0|
+ApplicationEmail                     |    0|
+ApplicationStyle                     |    0|
+ApplicationStyleVersion              |    0|
+ApplicationUpgrade                   |    0|
+ApprovalGroups                       |    0|
+BusinessDayCalendars                 |    0|
+CRMProvider                          |    0|
+CRMProviderMapping                   |    0|
+Client                               |    0|
+ClientAllowedLinks                   |    0|
+ClientConfiguration                  |    0|
+ClientLink                           |    0|
+ClientResourceCounts                 |    0|
+Commentaries                         |    0|
+CommentariesBackup                   |    0|
+CommentaryTypes                      |    0|
+Component                            |    0|
+ComponentBackup                      |    0|
+ComponentGraph                       |    0|
+ComponentGraphBackup                 |    0|
+ComponentMeta                        |    0|
+ComponentMetaBackup                  |    0|
+ConditionalMarketAnalysis            |    0|
+ConditionalMarketAnalysisBackup      |    0|
+Contact                              |    0|
+ContactGroup                         |    0|
+Content                              |    0|
+ContentAction                        |    0|
+ContentCache                         |    0|
+ContentData                          |    0|
+ContentType                          |    0|
+ContentTypeHierarchy                 |    0|
+Cultures                             |    0|
+Dashboard                            |    0|
+DataEntitlementList                  |    0|
+Dataset                              |    0|
+DatasetBackup                        |    0|
+DatasetDataAdapter                   |    0|
+DisclaimerTypes                      |    0|
+Disclaimers                          |    0|
+DisclaimersBackup                    |    0|
+DistributionList                     |    0|
+DocumentBackup                       |    0|
+DocumentBackupStub                   |    0|
+DocumentEntitlementMetaSummary       |    0|
+DocumentEntitlementScheme            |    0|
+DocumentGeneration                   |    0|
+DocumentGenerationBatch              |    0|
+DocumentMetaData                     |    0|
+DocumentNotificationDelivery         |    0|
+DocumentNotificationSubscription     |    0|
+DocumentPackage                      |    0|
+DocumentProductionClientCount        |    0|
+DocumentSecurityGroup                |    0|
+Documents                            |    0|
+DocumentsRetrievalStats              |    0|
+DomainWhitelist                      |    0|
+DraftWorkflow                        |    0|
+EntitlementPresets                   |    0|
+Entity                               |    0|
+EntityBackup                         |    0|
+EntityBackupStub                     |    0|
+EnvironmentVariables                 |    0|
+ExtendedProperty                     |    0|
+FailureLog                           |    0|
+FairQueueCapacitySummary             |    0|
+FairQueueClientCapacity              |    0|
+FairQueueJob                         |    0|
+FairQueueJobTiming                   |    0|
+FormatCode                           |    0|
+FtpBucket                            |    0|
+FundList                             |    0|
+FundListBackup                       |    0|
+FundManager                          |    0|
+FundManagerBackup                    |    0|
+FundManagerEntitlementList           |    0|
+FundManagerKeyFacts                  |    0|
+Hierarchy                            |    0|
+HierarchyTemplate                    |    0|
+HistoricalDatasetProperties          |    0|
+HistoricalDatasets                   |    0|
+HistoricalDatasetsBackup             |    0|
+KAPP_human_users_audit               |    0|
+KAPP_non_human_users_audit           |    0|
+LayoutComponent                      |    0|
+LayoutConfiguration                  |    0|
+LayoutConfigurationBackup            |    0|
+LayoutConfigurationType              |    0|
+LoaderSnapshots                      |    0|
+LookupListValue                      |    0|
+OfficeTemplates                      |    0|
+OfficeTemplatesBackup                |    0|
+PageTemplate                         |    0|
+PageTemplateAsset                    |    0|
+Portfolio                            |    0|
+PortfolioBackup                      |    0|
+PortfolioEntity                      |    0|
+PortfolioEntityBackup                |    0|
+Properties                           |    0|
+RegimePeriod                         |    0|
+RegimeType                           |    0|
+Relationship                         |    0|
+ReportingConfiguration               |    0|
+ReportingConfigurationBackup         |    0|
+ReportingConfigurationReference      |    0|
+ReportingConfigurationReferenceBackup|    0|
+Role                                 |    0|
+SavedSearchEntity                    |    0|
+Scenario                             |    0|
+ScenarioBackup                       |    0|
+ScenarioManager                      |    0|
+ScenarioManagerBackup                |    0|
+ScenarioReport                       |    0|
+ScenarioReportBackup                 |    0|
+ScheduleConfiguration                |    0|
+Secrets                              |    0|
+SegmentationTags                     |    0|
+Snapshot                             |    0|
+SnapshotConfig                       |    0|
+StatisticProperties                  |    0|
+Statistics                           |    0|
+StatisticsBackup                     |    0|
+StatisticsBackupStub                 |    0|
+Strategies                           |    0|
+Theme                                |    0|
+ThemeVersion                         |    0|
+Timeseries                           |    0|
+TimeseriesBackup                     |    0|
+TimeseriesBackupStub                 |    0|
+TimeseriesProperties                 |    0|
+TransactionProperties                |    0|
+Transactions                         |    0|
+TransactionsBackup                   |    0|
+TranslationProviderConfiguration     |    0|
+TranslationProviderLanguages         |    0|
+TranslationProviderProject           |    0|
+Translations                         |    0|
+TranslationsBackup                   |    0|
+TranslationsLog                      |    0|
+User                                 |    0|
+UserMetaProperties                   |    0|
+UserRegistrationRequests             |    0|
+ValidationSchema                     |    0|
+ValidationSchemaLinks                |    0|
+VersionHistory                       |    0|
+VersionHistoryAsset                  |    0|
+VersionHistoryContent                |    0|
+VersionHistoryHierarchy              |    0|
+VersionHistoryMeta                   |    0|
+WarpdriveCache                       |    0|
+Watermark                            |    0|
+WordpressMultiDomains                |    0|
+WordpressProxies                     |    0|
+WordpressRedirects                   |    0|
+WordpressRevision                    |    0|
+WordpressRevisionConfig              |    0|
+WordpressSites                       |    0|
+WordpressWildcardRedirects           |    0|
+Workflow                             |    0|
+WorkflowEmailTemplate                |    0|
+WorkflowExceptionReasons             |    0|
+WorkflowInitiationLocks              |    0|
+WorkflowRun                          |    0|
+WorkflowRunException                 |    0|
+WorkflowRunItem                      |    0|
+WorkflowRunItemInputsHistory         |    0|
+WorkflowRunItemStatusHistory         |    0|
+WorkflowStep                         |    0|
